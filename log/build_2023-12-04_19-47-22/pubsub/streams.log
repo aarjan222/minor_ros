@@ -1,0 +1,29 @@
+[0.787s] Invoking command in '/home/aarjan/minor_ros/src/pubsub': PYTHONPATH=/home/aarjan/minor_ros/build/pubsub/prefix_override:/home/aarjan/minor_ros/install/pubsub/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/pubsub build --build-base /home/aarjan/minor_ros/build/pubsub/build install --record /home/aarjan/minor_ros/build/pubsub/install.log --single-version-externally-managed
+[0.990s] running egg_info
+[0.990s] writing ../../build/pubsub/pubsub.egg-info/PKG-INFO
+[0.990s] writing dependency_links to ../../build/pubsub/pubsub.egg-info/dependency_links.txt
+[0.990s] writing entry points to ../../build/pubsub/pubsub.egg-info/entry_points.txt
+[0.990s] writing requirements to ../../build/pubsub/pubsub.egg-info/requires.txt
+[0.991s] writing top-level names to ../../build/pubsub/pubsub.egg-info/top_level.txt
+[0.992s] reading manifest file '../../build/pubsub/pubsub.egg-info/SOURCES.txt'
+[0.992s] writing manifest file '../../build/pubsub/pubsub.egg-info/SOURCES.txt'
+[0.992s] running build
+[0.992s] running build_py
+[0.993s] copying pubsub/vel_subscriber.py -> /home/aarjan/minor_ros/build/pubsub/build/lib/pubsub
+[0.993s] running install
+[0.993s] running install_lib
+[0.993s] copying /home/aarjan/minor_ros/build/pubsub/build/lib/pubsub/vel_subscriber.py -> /home/aarjan/minor_ros/install/pubsub/lib/python3.10/site-packages/pubsub
+[0.994s] byte-compiling /home/aarjan/minor_ros/install/pubsub/lib/python3.10/site-packages/pubsub/vel_subscriber.py to vel_subscriber.cpython-310.pyc
+[0.994s] running install_data
+[0.995s] running install_egg_info
+[0.996s] removing '/home/aarjan/minor_ros/install/pubsub/lib/python3.10/site-packages/pubsub-0.0.0-py3.10.egg-info' (and everything under it)
+[0.996s] Copying ../../build/pubsub/pubsub.egg-info to /home/aarjan/minor_ros/install/pubsub/lib/python3.10/site-packages/pubsub-0.0.0-py3.10.egg-info
+[0.997s] running install_scripts
+[1.012s] Installing draw_circle script to /home/aarjan/minor_ros/install/pubsub/lib/pubsub
+[1.012s] Installing listener script to /home/aarjan/minor_ros/install/pubsub/lib/pubsub
+[1.013s] Installing motor_vel script to /home/aarjan/minor_ros/install/pubsub/lib/pubsub
+[1.013s] Installing talker script to /home/aarjan/minor_ros/install/pubsub/lib/pubsub
+[1.013s] Installing test_node script to /home/aarjan/minor_ros/install/pubsub/lib/pubsub
+[1.013s] Installing turtle_controller script to /home/aarjan/minor_ros/install/pubsub/lib/pubsub
+[1.013s] writing list of installed files to '/home/aarjan/minor_ros/build/pubsub/install.log'
+[1.037s] Invoked command in '/home/aarjan/minor_ros/src/pubsub' returned '0': PYTHONPATH=/home/aarjan/minor_ros/build/pubsub/prefix_override:/home/aarjan/minor_ros/install/pubsub/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/pubsub build --build-base /home/aarjan/minor_ros/build/pubsub/build install --record /home/aarjan/minor_ros/build/pubsub/install.log --single-version-externally-managed

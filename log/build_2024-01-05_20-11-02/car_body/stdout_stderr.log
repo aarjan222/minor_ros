@@ -1,0 +1,21 @@
+-- Install configuration: ""
+-- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/description
+-- Installing: /home/aarjan/minor_ros/install/car_body/share/car_body/description/color.urdf.xacro
+-- Installing: /home/aarjan/minor_ros/install/car_body/share/car_body/description/car.urdf.xacro
+-- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/launch
+-- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/launch/sdccar.launch.py
+-- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/ament_index/resource_index/package_run_dependencies/car_body
+-- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/ament_index/resource_index/parent_prefix_path/car_body
+-- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/environment/ament_prefix_path.sh
+-- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/environment/path.sh
+-- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/environment/path.dsv
+-- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/local_setup.bash
+-- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/local_setup.sh
+-- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/local_setup.zsh
+-- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/local_setup.dsv
+-- Installing: /home/aarjan/minor_ros/install/car_body/share/car_body/package.dsv
+-- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/ament_index/resource_index/packages/car_body
+-- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/cmake/car_bodyConfig.cmake
+-- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/cmake/car_bodyConfig-version.cmake
+-- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/package.xml

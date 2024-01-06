@@ -1,0 +1,6 @@
+Invoking command in '/home/aarjan/minor_ros/build/car_body': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/aarjan/minor_ros/src/car_body -DCMAKE_INSTALL_PREFIX=/home/aarjan/minor_ros/install/car_body
+Invoked command in '/home/aarjan/minor_ros/build/car_body' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/aarjan/minor_ros/src/car_body -DCMAKE_INSTALL_PREFIX=/home/aarjan/minor_ros/install/car_body
+Invoking command in '/home/aarjan/minor_ros/build/car_body': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/aarjan/minor_ros/build/car_body -- -j12 -l12
+Invoked command in '/home/aarjan/minor_ros/build/car_body' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/aarjan/minor_ros/build/car_body -- -j12 -l12
+Invoking command in '/home/aarjan/minor_ros/build/car_body': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/aarjan/minor_ros/build/car_body
+Invoked command in '/home/aarjan/minor_ros/build/car_body' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/aarjan/minor_ros/build/car_body

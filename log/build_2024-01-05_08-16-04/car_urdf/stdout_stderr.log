@@ -1,0 +1,27 @@
+running egg_info
+writing ../../build/car_urdf/car_urdf.egg-info/PKG-INFO
+writing dependency_links to ../../build/car_urdf/car_urdf.egg-info/dependency_links.txt
+writing entry points to ../../build/car_urdf/car_urdf.egg-info/entry_points.txt
+writing requirements to ../../build/car_urdf/car_urdf.egg-info/requires.txt
+writing top-level names to ../../build/car_urdf/car_urdf.egg-info/top_level.txt
+writing ../../build/car_urdf/car_urdf.egg-info/PKG-INFO
+writing dependency_links to ../../build/car_urdf/car_urdf.egg-info/dependency_links.txt
+writing entry points to ../../build/car_urdf/car_urdf.egg-info/entry_points.txt
+writing requirements to ../../build/car_urdf/car_urdf.egg-info/requires.txt
+writing top-level names to ../../build/car_urdf/car_urdf.egg-info/top_level.txt
+reading manifest file '../../build/car_urdf/car_urdf.egg-info/SOURCES.txt'
+writing manifest file '../../build/car_urdf/car_urdf.egg-info/SOURCES.txt'
+running build
+running build_py
+copying car_urdf/car.launch.py -> /home/aarjan/minor_ros/build/car_urdf/build/lib/car_urdf
+running install
+running install_lib
+copying /home/aarjan/minor_ros/build/car_urdf/build/lib/car_urdf/car.launch.py -> /home/aarjan/minor_ros/install/car_urdf/lib/python3.10/site-packages/car_urdf
+byte-compiling /home/aarjan/minor_ros/install/car_urdf/lib/python3.10/site-packages/car_urdf/car.launch.py to car.launch.cpython-310.pyc
+running install_data
+running install_egg_info
+removing '/home/aarjan/minor_ros/install/car_urdf/lib/python3.10/site-packages/car_urdf-0.0.0-py3.10.egg-info' (and everything under it)
+Copying ../../build/car_urdf/car_urdf.egg-info to /home/aarjan/minor_ros/install/car_urdf/lib/python3.10/site-packages/car_urdf-0.0.0-py3.10.egg-info
+running install_scripts
+Installing talker script to /home/aarjan/minor_ros/install/car_urdf/lib/car_urdf
+writing list of installed files to '/home/aarjan/minor_ros/build/car_urdf/install.log'

@@ -1,0 +1,25 @@
+[0.105s] Invoking command in '/home/aarjan/minor_ros/build/car_body': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/aarjan/minor_ros/install/pubsub:/home/aarjan/minor_ros/install/car_urdf:/opt/ros/humble /usr/bin/cmake --build /home/aarjan/minor_ros/build/car_body -- -j12 -l12
+[0.127s] Invoked command in '/home/aarjan/minor_ros/build/car_body' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/aarjan/minor_ros/install/pubsub:/home/aarjan/minor_ros/install/car_urdf:/opt/ros/humble /usr/bin/cmake --build /home/aarjan/minor_ros/build/car_body -- -j12 -l12
+[0.142s] Invoking command in '/home/aarjan/minor_ros/build/car_body': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/aarjan/minor_ros/install/pubsub:/home/aarjan/minor_ros/install/car_urdf:/opt/ros/humble /usr/bin/cmake --install /home/aarjan/minor_ros/build/car_body
+[0.144s] -- Install configuration: ""
+[0.144s] -- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/description
+[0.144s] -- Installing: /home/aarjan/minor_ros/install/car_body/share/car_body/description/color.urdf.xacro
+[0.144s] -- Installing: /home/aarjan/minor_ros/install/car_body/share/car_body/description/car.urdf.xacro
+[0.144s] -- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/launch
+[0.144s] -- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/launch/sdccar.launch.py
+[0.144s] -- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/ament_index/resource_index/package_run_dependencies/car_body
+[0.144s] -- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/ament_index/resource_index/parent_prefix_path/car_body
+[0.144s] -- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/environment/ament_prefix_path.sh
+[0.145s] -- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/environment/ament_prefix_path.dsv
+[0.145s] -- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/environment/path.sh
+[0.145s] -- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/environment/path.dsv
+[0.145s] -- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/local_setup.bash
+[0.145s] -- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/local_setup.sh
+[0.145s] -- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/local_setup.zsh
+[0.145s] -- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/local_setup.dsv
+[0.145s] -- Installing: /home/aarjan/minor_ros/install/car_body/share/car_body/package.dsv
+[0.145s] -- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/ament_index/resource_index/packages/car_body
+[0.145s] -- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/cmake/car_bodyConfig.cmake
+[0.145s] -- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/cmake/car_bodyConfig-version.cmake
+[0.145s] -- Up-to-date: /home/aarjan/minor_ros/install/car_body/share/car_body/package.xml
+[0.146s] Invoked command in '/home/aarjan/minor_ros/build/car_body' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/aarjan/minor_ros/install/pubsub:/home/aarjan/minor_ros/install/car_urdf:/opt/ros/humble /usr/bin/cmake --install /home/aarjan/minor_ros/build/car_body

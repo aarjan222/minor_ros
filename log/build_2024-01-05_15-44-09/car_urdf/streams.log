@@ -1,0 +1,26 @@
+[1.180s] Invoking command in '/home/aarjan/minor_ros/src/car_urdf': PYTHONPATH=/home/aarjan/minor_ros/build/car_urdf/prefix_override:/home/aarjan/minor_ros/install/car_urdf/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/car_urdf build --build-base /home/aarjan/minor_ros/build/car_urdf/build install --record /home/aarjan/minor_ros/build/car_urdf/install.log --single-version-externally-managed
+[1.383s] running egg_info
+[1.383s] writing ../../build/car_urdf/car_urdf.egg-info/PKG-INFO
+[1.384s] writing dependency_links to ../../build/car_urdf/car_urdf.egg-info/dependency_links.txt
+[1.384s] writing entry points to ../../build/car_urdf/car_urdf.egg-info/entry_points.txt
+[1.384s] writing requirements to ../../build/car_urdf/car_urdf.egg-info/requires.txt
+[1.384s] writing top-level names to ../../build/car_urdf/car_urdf.egg-info/top_level.txt
+[1.384s] writing ../../build/car_urdf/car_urdf.egg-info/PKG-INFO
+[1.384s] writing dependency_links to ../../build/car_urdf/car_urdf.egg-info/dependency_links.txt
+[1.384s] writing entry points to ../../build/car_urdf/car_urdf.egg-info/entry_points.txt
+[1.384s] writing requirements to ../../build/car_urdf/car_urdf.egg-info/requires.txt
+[1.384s] writing top-level names to ../../build/car_urdf/car_urdf.egg-info/top_level.txt
+[1.385s] reading manifest file '../../build/car_urdf/car_urdf.egg-info/SOURCES.txt'
+[1.385s] adding license file 'LICENSE'
+[1.386s] writing manifest file '../../build/car_urdf/car_urdf.egg-info/SOURCES.txt'
+[1.386s] running build
+[1.386s] running build_py
+[1.386s] running install
+[1.386s] running install_lib
+[1.387s] running install_data
+[1.388s] running install_egg_info
+[1.389s] removing '/home/aarjan/minor_ros/install/car_urdf/lib/python3.10/site-packages/car_urdf-0.0.0-py3.10.egg-info' (and everything under it)
+[1.390s] Copying ../../build/car_urdf/car_urdf.egg-info to /home/aarjan/minor_ros/install/car_urdf/lib/python3.10/site-packages/car_urdf-0.0.0-py3.10.egg-info
+[1.390s] running install_scripts
+[1.403s] writing list of installed files to '/home/aarjan/minor_ros/build/car_urdf/install.log'
+[1.428s] Invoked command in '/home/aarjan/minor_ros/src/car_urdf' returned '0': PYTHONPATH=/home/aarjan/minor_ros/build/car_urdf/prefix_override:/home/aarjan/minor_ros/install/car_urdf/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/car_urdf build --build-base /home/aarjan/minor_ros/build/car_urdf/build install --record /home/aarjan/minor_ros/build/car_urdf/install.log --single-version-externally-managed
