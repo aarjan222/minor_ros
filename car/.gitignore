@@ -5,3 +5,4 @@ tmp/
 
 build/
 compile_commands.json
+log/

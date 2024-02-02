@@ -12,6 +12,7 @@ class Rear
     float speed1 = 0, speed2 = 0;
 
 public:
+    float velocity1 = 0, velocity2 = 0;
     Motor motor[2];
     Encoder motor_encoder[2];
 

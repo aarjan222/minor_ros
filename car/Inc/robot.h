@@ -11,6 +11,12 @@
 #include "tim.h"
 #include "usart.h"
 #include "robotlib/actuators/servo.hpp"
+#include "ackermann_kinematics.hpp"
+
+#define wheel_base 0.54
+#define rear_wheel_to_center 0.27
+uint32_t loop_time = 100.0;
+float wheel_radius = 0.115;
 
 struct Odometry
 {
@@ -21,8 +27,6 @@ struct Odometry
 
 struct ROSBridgeTransmit
 {
-  uint16_t acc[3];
-  uint16_t gyro[3];
   Odometry odom;
 };
 
@@ -30,6 +34,15 @@ struct RosData
 {
   float linear_x;
   float angular_z;
+};
+
+float car_pose[3] = {0., 0., 0.};
+
+struct CarState
+{
+  float car_speed, car_steer_angle;
+  CarState(float _car_speed, float _car_steer_angle) : car_speed(_car_speed), car_steer_angle(_car_steer_angle) {}
+  CarState() {}
 };
 
 class Robot
@@ -40,8 +53,13 @@ public:
   Servo steering;
   UART rosbridge;
   RosData received_data;
+  AckermannKinematics ackermannkinematics;
+  CarState car_state;
+  ROSBridgeTransmit ros_transmit;
   void init();
   void run();
+  void set_state_from_uart_data();
+  void update();
 };
 
 #endif // __cplusplus

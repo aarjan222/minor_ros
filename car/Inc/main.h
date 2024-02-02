@@ -65,14 +65,6 @@ void Error_Handler(void);
 #define rear_right_motor_pwm_GPIO_Port GPIOE
 #define rear_right_motor_dir_Pin GPIO_PIN_14
 #define rear_right_motor_dir_GPIO_Port GPIOC
-#define rear_right_enc_1_Pin GPIO_PIN_4
-#define rear_right_enc_1_GPIO_Port GPIOB
-#define rear_right_enc_2_Pin GPIO_PIN_5
-#define rear_right_enc_2_GPIO_Port GPIOB
-#define rear_left_enc_1_Pin GPIO_PIN_6
-#define rear_left_enc_1_GPIO_Port GPIOB
-#define rear_left_enc_2_Pin GPIO_PIN_7
-#define rear_left_enc_2_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

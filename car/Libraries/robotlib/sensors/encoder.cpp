@@ -21,6 +21,7 @@ float Encoder::get_omega(void)
   int32_t sample_time = HAL_GetTick() - last_reset_time;
   omega = (2.0 * 3.14) * count / (ppr * ((float)sample_time / 1000.0));
   prevCount = get_count();
+  last_reset_time = HAL_GetTick();
   return omega;
 }
 

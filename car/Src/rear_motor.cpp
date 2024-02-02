@@ -5,8 +5,8 @@
 
 void Rear::init()
 {
-    motor_encoder[0] = Encoder(&htim4, 800);
-    motor_encoder[1] = Encoder(&htim3, 800);
+    motor_encoder[0] = Encoder(&htim3, 6200);
+    motor_encoder[1] = Encoder(&htim4, 6200);
 
     motor[0] = Motor(&htim9, rear_left_motor_dir_GPIO_Port,
                      TIM_CHANNEL_1, rear_left_motor_dir_Pin, 65535);
@@ -31,7 +31,7 @@ void Rear::run()
 {
     motor[0].set_speed(speed1);
     motor[1].set_speed(speed2);
-    printf("motor speed %.1f %.1f\n", speed1, speed2);
+    // printf("motor speed %.1f %.1f\n", speed1, speed2);
     // printf("motor count %d\t %d \n", motor_encoder[0].get_count(), motor_encoder[1].get_count());
     // printf("\t motor speed  %.1f\t %.1f\n", motor_encoder[0].get_omega(), motor_encoder[1].get_omega());
 }
