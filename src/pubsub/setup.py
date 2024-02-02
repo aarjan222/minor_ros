@@ -25,7 +25,8 @@ setup(
             'draw_circle = pubsub.draw_circle:main',
             'test_node = pubsub.mynode:main',
             'turtle_controller = pubsub.turtle_controller:main',
-            'motor_vel = pubsub.my_vel_subscriber:main',
+            'carcontrol = pubsub.car_control:main',
+            'posereceiver = pubsub.pose_receiver:main',
         ],
     },
 )
