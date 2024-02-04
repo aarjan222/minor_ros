@@ -1,8 +1,0 @@
-[console_scripts]
-draw_circle = pubsub.draw_circle:main
-listener = pubsub.vel_subscriber:main
-motor_vel = pubsub.my_vel_subscriber:main
-talker = pubsub.vel_publisher:main
-test_node = pubsub.mynode:main
-turtle_controller = pubsub.turtle_controller:main
-

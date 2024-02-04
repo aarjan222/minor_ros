@@ -1,9 +1,0 @@
-/home/aarjan/minor_ros/build/car_body/CMakeFiles/uninstall.dir
-/home/aarjan/minor_ros/build/car_body/CMakeFiles/car_body_uninstall.dir
-/home/aarjan/minor_ros/build/car_body/CMakeFiles/test.dir
-/home/aarjan/minor_ros/build/car_body/CMakeFiles/edit_cache.dir
-/home/aarjan/minor_ros/build/car_body/CMakeFiles/rebuild_cache.dir
-/home/aarjan/minor_ros/build/car_body/CMakeFiles/list_install_components.dir
-/home/aarjan/minor_ros/build/car_body/CMakeFiles/install.dir
-/home/aarjan/minor_ros/build/car_body/CMakeFiles/install/local.dir
-/home/aarjan/minor_ros/build/car_body/CMakeFiles/install/strip.dir
