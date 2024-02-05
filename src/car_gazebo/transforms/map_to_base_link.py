@@ -72,7 +72,7 @@ class FramePublisher(Node):
         self.subscription = self.create_subscription(
             Pose,
             'pose',
-            self.handle_map,no
+            self.handle_map,
             1)
         self.subscription  # prevent unused variable warning
 
@@ -94,6 +94,7 @@ class FramePublisher(Node):
         # For the same reason, turtle can only rotate around one axis
         # and this why we set rotation in x and y to 0 and obtain
         # rotation in z axis from the message
+        # q = quaternion_from_euler(0, 0, msg.orientation.w)
         t.transform.rotation.x = 0.0
         t.transform.rotation.y = 0.0
         t.transform.rotation.z = 0.0

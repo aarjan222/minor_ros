@@ -174,12 +174,15 @@ def generate_launch_description():
     ld.add_action(start_rviz)
     ld.add_action(start_gazebo_server)
     ld.add_action(start_gazebo_client)
-    ld.add_action(fake_encoder_odom_topic)
     ld.add_action(start_gazebo_spawner)
-    ld.add_action(map_base_link)
+
+    ld.add_action(base_laser)
+    ld.add_action(fake_encoder_odom_topic)
     ld.add_action(odom_base_link)
+    ld.add_action(map_base_link)
+    
     ld.add_action(start_joint_state_publisher)
     ld.add_action(start_robot_state_publisher)
-    # ld.add_action(imu)
+    ld.add_action(imu)
 
     return ld

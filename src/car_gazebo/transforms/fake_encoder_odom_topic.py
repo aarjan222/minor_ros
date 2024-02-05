@@ -13,8 +13,8 @@ class Encoder_Odom(Node):
 
     def timer_callback(self):
         msg = Pose()
-        msg.position.x = 1.0
-        msg.position.y = 2.0
+        msg.position.x = 0.0
+        msg.position.y = 0.0
         msg.position.z = 0.0
         msg.orientation.w = 1.0
         msg.orientation.x = 0.0
