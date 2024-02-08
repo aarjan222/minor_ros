@@ -25,11 +25,13 @@ ament_lint_auto_find_test_dependencies()
 endif()
 
 install(
-  DIRECTORY launch rviz config worlds transforms src
+  DIRECTORY launch config transforms src rosbridge
   DESTINATION share/${PROJECT_NAME}
 )
 
 install(PROGRAMS
+  rosbridge/car_teleop.py
+  rosbridge/pose_receiver.py
   transforms/fake_encoder_odom_topic.py
   transforms/base_link_to_laser_frame.py
   transforms/map_to_base_link.py

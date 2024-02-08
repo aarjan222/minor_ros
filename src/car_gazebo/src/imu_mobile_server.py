@@ -26,6 +26,7 @@ class IMUPublisher(Node):
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.i = 0
 
+
     def timer_callback(self):
 
         msg = Imu()
@@ -69,8 +70,8 @@ def threaded_imu_loop():
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-    server_address = '10.100.40.186'
-    server_port = 8090
+    server_address = '10.100.40.237'
+    server_port = 5555
 
     server = (server_address, server_port)
     sock.bind(server)
@@ -98,7 +99,7 @@ def threaded_imu_loop():
             imu_data['m'] = (mx, my, mz)
         else:
             pass
-        # print(imu_data)
+        print(imu_data)
 
 
 def main(args=None):
