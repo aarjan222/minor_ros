@@ -22,7 +22,6 @@
 #include <vector>
 
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
-#include "rclcpp/rclcpp.hpp"
 
 namespace car_gazebo
 {
@@ -158,6 +157,50 @@ namespace car_gazebo
 
     hw_interfaces_["traction"] = Joint("virtual_rear_wheel_joint");
 
+    sockfd_si_to_serialcomms = socket(AF_UNIX, SOCK_STREAM, 0);
+    if (sockfd_si_to_serialcomms == -1)
+    {
+      RCLCPP_ERROR(
+          rclcpp::get_logger("CarlikeBotSystemHardware"),
+          "Error creating socket!");
+      return hardware_interface::CallbackReturn::ERROR;
+    }
+    sockaddress_si_to_serialcomms.sun_family = AF_UNIX;
+    strcpy(sockaddress_si_to_serialcomms.sun_path, "/tmp/si_to_serialcomms");
+    len_si_to_serialcomms = sizeof(sockaddress_si_to_serialcomms);
+
+    int connect_stat = connect(sockfd_si_to_serialcomms, (sockaddr *)&sockaddress_si_to_serialcomms, len_si_to_serialcomms);
+
+    if (connect_stat == -1)
+    {
+      RCLCPP_ERROR(
+          rclcpp::get_logger("CarlikeBotSystemHardware"),
+          "CarlikeBotSystemHardware::on_init() - Failed to initialize, "
+          "cannot connect to socket.");
+      return hardware_interface::CallbackReturn::ERROR;
+    }
+    else
+    {
+      RCLCPP_INFO(
+          rclcpp::get_logger("CarlikeBotSystemHardware"),
+          "CarlikeBotSystemHardware::on_init() - Initialized sockets");
+      return hardware_interface::CallbackReturn::ERROR;
+    }
+
+    sockfd_serialcomms_to_si = socket(AF_UNIX, SOCK_STREAM, 0);
+    sockaddress_serialcomms_to_si.sun_family = AF_UNIX;
+    strcpy(sockaddress_serialcomms_to_si.sun_path, "/tmp/serialcomms_to_si");
+    len_si_to_serialcomms = sizeof(sockaddress_serialcomms_to_si);
+
+    if (connect(sockfd_serialcomms_to_si, (sockaddr *)&sockaddress_serialcomms_to_si, len_si_to_serialcomms) == -1)
+    {
+      RCLCPP_ERROR(
+          rclcpp::get_logger("CarlikeBotSystemHardware"),
+          "CarlikeBotSystemHardware::on_init() - Failed to initialize, "
+          "cannot connect to socket.");
+      return hardware_interface::CallbackReturn::ERROR;
+    }
+
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
@@ -254,6 +297,8 @@ namespace car_gazebo
       }
     }
 
+    // connect serial with stm
+
     RCLCPP_INFO(rclcpp::get_logger("CarlikeBotSystemHardware"), "Successfully activated!");
 
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -272,6 +317,9 @@ namespace car_gazebo
           rclcpp::get_logger("CarlikeBotSystemHardware"), "%.1f seconds left...", hw_stop_sec_ - i);
     }
     // END: This part here is for exemplary purposes - Please do not copy to your production code
+
+    // disconnect serial with stm
+
     RCLCPP_INFO(rclcpp::get_logger("CarlikeBotSystemHardware"), "Successfully deactivated!");
 
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -280,23 +328,44 @@ namespace car_gazebo
   hardware_interface::return_type CarlikeBotSystemHardware::read(
       const rclcpp::Time & /*time*/, const rclcpp::Duration &period)
   {
-    // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
+    // rear_wheel_joint
+    // read encoder values of both two rear wheels-------------------------position
+    // read velocity values of both two rear wheels------------------------velocity
 
-    hw_interfaces_["steering"].state.position = hw_interfaces_["steering"].command.position;
+    // front_wheel_joint
+    // read servo position only position-----------------------------------position
 
-    hw_interfaces_["traction"].state.velocity = hw_interfaces_["traction"].command.velocity;
-    hw_interfaces_["traction"].state.position +=
-        hw_interfaces_["traction"].state.velocity * period.seconds();
+    /*-----------------------------------read data from stm to pi to ros2 to python to cpp plugin-----------------------------------*/
+    double received_state[3];
+    int reciv_state = recv(sockfd_si_to_serialcomms, received_state, sizeof(received_state), 0);
+    if (reciv_state == -1)
+    {
+      RCLCPP_INFO(rclcpp::get_logger("CarlikeBotSystemHardware"), "Error receiving data");
+      return hardware_interface::CallbackReturn::ERROR;
+    }
 
-    // RCLCPP_INFO(
-    //     rclcpp::get_logger("CarlikeBotSystemHardware"), "Got position state: %.2f for joint '%s'.",
-    //     hw_interfaces_["steering"].command.position, hw_interfaces_["steering"].joint_name.c_str());
+    // copy received data to car(rear_wheel_count, rear_wheel_position, front_wheel_steering)
+    memcpy(&car, &received_state, sizeof(car));
 
-    // RCLCPP_INFO(
-    //     rclcpp::get_logger("CarlikeBotSystemHardware"), "Got velocity state: %.2f for joint '%s'.",
-    //     hw_interfaces_["traction"].command.velocity, hw_interfaces_["traction"].joint_name.c_str());
+    // feedback if no car odometry, you can uncomment this line, your car starts to move in rviz as according to your feedback
+    // car.traction_wheel_position += 100.0;
+    // car.traction_wheel_velocity = 5.0;
+    // car.steering_position = 0.01;
 
-    // END: This part here is for exemplary purposes - Please do not copy to your production code
+    // update rear_wheel_joint position
+    hw_interfaces_["traction"].state.position = car.traction_wheel_position; //-----------------both wheel encoder values
+    // update rear_wheel_joint velocity
+    hw_interfaces_["traction"].state.velocity = car.traction_wheel_velocity; //-----------------both wheel velocity values
+    // update front_wheel_joint position
+    hw_interfaces_["steering"].state.position = car.steering_position; //-----------------------front servo steering values
+
+    RCLCPP_INFO(
+        rclcpp::get_logger("CarlikeBotSystemHardware"), "Got position state: %.2f for joint '%s'.",
+        hw_interfaces_["steering"].state.position, hw_interfaces_["steering"].joint_name.c_str());
+
+    RCLCPP_INFO(
+        rclcpp::get_logger("CarlikeBotSystemHardware"), "Got velocity state: %.2f for joint '%s'.",
+        hw_interfaces_["traction"].state.velocity, hw_interfaces_["traction"].joint_name.c_str());
 
     return hardware_interface::return_type::OK;
   }
@@ -304,21 +373,35 @@ namespace car_gazebo
   hardware_interface::return_type car_gazebo ::CarlikeBotSystemHardware::write(
       const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
   {
-    // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
+    /*-----------------------------------write data from topic /bicycle_steering_controller/reference to cpp plugin to python to ros2 to pi to stm-----------------------------------*/
 
-    // RCLCPP_INFO(
-    //     rclcpp::get_logger("CarlikeBotSystemHardware"), "Got position command: %.2f for joint '%s'.",
-    //     hw_interfaces_["steering"].command.position, hw_interfaces_["steering"].joint_name.c_str());
+    // rear_wheel_joint
+    // set velocities for both two rear wheel------------------------------velocity
+    // front_wheel_joint
+    // set servo position for front steering-------------------------------position
 
-    // RCLCPP_INFO(
-    //     rclcpp::get_logger("CarlikeBotSystemHardware"), "Got velocity command: %.2f for joint '%s'.",
-    //     hw_interfaces_["traction"].command.velocity, hw_interfaces_["traction"].joint_name.c_str());
+    RCLCPP_INFO(
+        rclcpp::get_logger("CarlikeBotSystemHardware"), "Got position command: %.2f for joint '%s'.",
+        hw_interfaces_["steering"].command.position, hw_interfaces_["steering"].joint_name.c_str());
 
-    // END: This part here is for exemplary purposes - Please do not copy to your production code
+    RCLCPP_INFO(
+        rclcpp::get_logger("CarlikeBotSystemHardware"), "Got velocity command: %.2f for joint '%s'.",
+        hw_interfaces_["traction"].command.velocity, hw_interfaces_["traction"].joint_name.c_str());
+
+    double command[] = {
+        hw_interfaces_["steering"].command.position,
+        hw_interfaces_["steering"].command.position,
+        hw_interfaces_["traction"].command.velocity};
+
+    int sent_state = send(sockfd_si_to_serialcomms, command, sizeof(command), 0);
+    if (sent_state == -1)
+    {
+      RCLCPP_INFO(rclcpp::get_logger("CarlikeBotSystemHardware"), "Error sending data");
+      return hardware_interface::CallbackReturn::ERROR;
+    }
 
     return hardware_interface::return_type::OK;
   }
-
 } // namespace car_gazebo
 
 #include "pluginlib/class_list_macros.hpp"

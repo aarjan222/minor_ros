@@ -59,14 +59,6 @@ install(
   DIRECTORY hardware/include/
   DESTINATION include/car_gazebo
 )
-# install(
-#   DIRECTORY description/launch description/ros2_control description/urdf
-#   DESTINATION share/car_gazebo
-# )
-# install(
-#   DIRECTORY bringup/launch bringup/config
-#   DESTINATION share/car_gazebo
-# )
 install(TARGETS car_gazebo
   EXPORT export_car_gazebo
   ARCHIVE DESTINATION lib
@@ -88,7 +80,6 @@ install(PROGRAMS
   src/car_control.py
   src/pose_receiver.py
   src/teleop.py
-  src/static_teleop.py
   DESTINATION lib/${PROJECT_NAME})
 
 ## EXPORTS

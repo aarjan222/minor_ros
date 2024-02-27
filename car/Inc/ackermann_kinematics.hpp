@@ -1,7 +1,21 @@
 #ifndef ACKERMANN_KINEMATICS_H_
 #define ACKERMANN_KINEMATICS_H_
 
+#define WB 1.0
+
 #include "math.h"
+
+struct Twist
+{
+    float vx, w, L;
+    Twist(float _vx, float _w) : vx(_vx), w(_w) {}
+    Twist() : Twist(0, 0) {}
+
+    static Twist from_v_delta(const float v, const float delta)
+    {
+        return Twist(v, v * tan(delta) / WB);
+    }
+};
 
 class AckermannKinematics
 {

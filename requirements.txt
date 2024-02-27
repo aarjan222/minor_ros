@@ -1,1 +1,5 @@
 pyserial==3.5
+ros-humble-hardware-interface
+xacro
+ros-humble-joint-state-publisher-gui
+install pyserial not serial
