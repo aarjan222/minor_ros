@@ -175,8 +175,11 @@ void Robot::update()
   {
     printf("%f\t", car_pose[i]); // x,y in m and theta in radian
   }
-  car.ros_transmit.odom.x = 1.2313;
-  car.ros_transmit.odom.y = 12323.0;
-  car.ros_transmit.odom.theta = 23.0;
+  car.ros_transmit.odom.x = car_pose[0];
+  car.ros_transmit.odom.y = car_pose[1];
+  car.ros_transmit.odom.theta = car_pose[2];
+  car.ros_transmit.odom.rear_encoder_val = rear.motor_encoder[0].get_count();
+  car.ros_transmit.odom.rear_wheel_velocity = omega1;
+  car.ros_transmit.odom.front_servo_steering = car_state.car_steer_angle;
   printf("\n");
 }

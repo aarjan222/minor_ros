@@ -40,9 +40,9 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <sys/types.h>
-
-using namespace std::chrono_literals;
-using namespace std::placeholders;
+#include <arpa/inet.h>
+#include <unistd.h>
+#define PORT 5555
 
 #include "car_gazebo/visibility_control.h"
 
@@ -117,14 +117,10 @@ namespace car_gazebo
 
     Car car;
 
-    size_t count_;
-    int sockfd_si_to_serialcomms;
-    int len_si_to_serialcomms;
-    sockaddr_un sockaddress_si_to_serialcomms;
-
-    int sockfd_serialcomms_to_si;
-    int len_serialcomms_to_si;
-    sockaddr_un sockaddress_serialcomms_to_si;
+    int server_fd, new_socket;
+    struct sockaddr_in address;
+    int opt = 1;
+    int addrlen = sizeof(address);
   };
 
 } // namespace car_gazebo

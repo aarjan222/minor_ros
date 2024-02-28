@@ -24,13 +24,18 @@ ros2 launch car_gazebo bringup_car.launch.py remap_odometry_tf:=true
 ```
 set odom as fixed_frame in rviz2
 
-# Check if the hardware interface loaded properly, by opening another terminal and executing
+## In another terminal run for sending feedback of stm to ros2_control using socket
+```shell
+ros2 run car_gazebo pose_receiver.py
+```
+
+## Check if the hardware interface loaded properly, by opening another terminal and executing
 
 ```shell
 ros2 control list_hardware_interfaces
 ```
 
-# You should get
+## You should get
 ```shell
 command interfaces
    bicycle_steering_controller/angular/position [unavailable] [unclaimed]
@@ -43,7 +48,7 @@ state interfaces
    virtual_rear_wheel_joint/velocity
 ```
 
-# Check if controllers are running
+## Check if controllers are running
 ```shell
 ros2 control list_controllers
 ```
@@ -54,7 +59,7 @@ joint_state_broadcaster[joint_state_broadcaster/JointStateBroadcaster] active
 bicycle_steering_controller[bicycle_steering_controller/BicycleSteeringController] active
 ```
 
-# If everything is fine, now you can send a command to bicycle_steering_controller using ROS 2 CLI:
+## If everything is fine, now you can send a command to bicycle_steering_controller using ROS 2 CLI:
 
 ```shell
 ros2 topic pub --rate 30 /bicycle_steering_controller/reference geometry_msgs/msg/TwistStamped "
@@ -67,4 +72,9 @@ ros2 topic pub --rate 30 /bicycle_steering_controller/reference geometry_msgs/ms
       x: 0.0
       y: 0.0
       z: 0.1"
+```
+
+## You can also run your car using teleop_twist_keyboard also
+```shell
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
 ```

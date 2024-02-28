@@ -194,7 +194,6 @@ def generate_launch_description():
         # map_base_link,
         # imu,
         # car_control,
-        # pose_receiver,
     ]
 
     return LaunchDescription(declared_arguments + nodes)

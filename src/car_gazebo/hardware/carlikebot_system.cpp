@@ -157,50 +157,64 @@ namespace car_gazebo
 
     hw_interfaces_["traction"] = Joint("virtual_rear_wheel_joint");
 
-    sockfd_si_to_serialcomms = socket(AF_UNIX, SOCK_STREAM, 0);
-    if (sockfd_si_to_serialcomms == -1)
+    // 1. Create Socket
+    if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0)
     {
       RCLCPP_ERROR(
-          rclcpp::get_logger("CarlikeBotSystemHardware"),
-          "Error creating socket!");
+          rclcpp::get_logger("CarlikeBotSystemHardware"), "socket failed!");
       return hardware_interface::CallbackReturn::ERROR;
     }
-    sockaddress_si_to_serialcomms.sun_family = AF_UNIX;
-    strcpy(sockaddress_si_to_serialcomms.sun_path, "/tmp/si_to_serialcomms");
-    len_si_to_serialcomms = sizeof(sockaddress_si_to_serialcomms);
 
-    int connect_stat = connect(sockfd_si_to_serialcomms, (sockaddr *)&sockaddress_si_to_serialcomms, len_si_to_serialcomms);
+    // 2. Setsockopt
+    // helps in reuse of address and port. Prevents error such as: “address already in use”.
+    int error_state = setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
+    if (error_state == -1)
+    {
+      perror("setsockopt");
+      RCLCPP_ERROR(
+          rclcpp::get_logger("CarlikeBotSystemHardware"), "setsockt opt failed %d!", error_state);
+      return hardware_interface::CallbackReturn::ERROR;
+    }
 
-    if (connect_stat == -1)
+    // 3. Bind
+    // after socket creation, this binds the socket to the address and port number
+    // specified in addr(custom data structure).
+
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_port = htons(PORT);
+
+    // bind socket to address and port
+    int bind_state = bind(server_fd, (struct sockaddr *)&address, sizeof(address));
+    if (bind_state < 0)
+    {
+      perror("bind");
+      RCLCPP_ERROR(
+          rclcpp::get_logger("CarlikeBotSystemHardware"), "binding failed %d!", bind_state);
+      return hardware_interface::CallbackReturn::ERROR;
+    }
+
+    // 4. Listen
+    // waits for the client to approach the server to make a connection
+    if (listen(server_fd, 3) < 0)
     {
       RCLCPP_ERROR(
-          rclcpp::get_logger("CarlikeBotSystemHardware"),
-          "CarlikeBotSystemHardware::on_init() - Failed to initialize, "
-          "cannot connect to socket.");
-      return hardware_interface::CallbackReturn::ERROR;
-    }
-    else
-    {
-      RCLCPP_INFO(
-          rclcpp::get_logger("CarlikeBotSystemHardware"),
-          "CarlikeBotSystemHardware::on_init() - Initialized sockets");
+          rclcpp::get_logger("CarlikeBotSystemHardware"), "listen failed!");
       return hardware_interface::CallbackReturn::ERROR;
     }
 
-    sockfd_serialcomms_to_si = socket(AF_UNIX, SOCK_STREAM, 0);
-    sockaddress_serialcomms_to_si.sun_family = AF_UNIX;
-    strcpy(sockaddress_serialcomms_to_si.sun_path, "/tmp/serialcomms_to_si");
-    len_si_to_serialcomms = sizeof(sockaddress_serialcomms_to_si);
-
-    if (connect(sockfd_serialcomms_to_si, (sockaddr *)&sockaddress_serialcomms_to_si, len_si_to_serialcomms) == -1)
+    // 5. Accept
+    // connection is established between client and server, and they are ready to transfer data.
+    if ((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen)) < 0)
     {
       RCLCPP_ERROR(
-          rclcpp::get_logger("CarlikeBotSystemHardware"),
-          "CarlikeBotSystemHardware::on_init() - Failed to initialize, "
-          "cannot connect to socket.");
+          rclcpp::get_logger("CarlikeBotSystemHardware"), "accept failed!");
       return hardware_interface::CallbackReturn::ERROR;
     }
 
+    // 6. Connection is established between server and client
+
+    RCLCPP_INFO(rclcpp::get_logger("CarlikeBotSystemHardware"), "Connection Established between server and client. Now Start read and write from both sides. ENJOY!!!!");
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
@@ -319,6 +333,8 @@ namespace car_gazebo
     // END: This part here is for exemplary purposes - Please do not copy to your production code
 
     // disconnect serial with stm
+    close(new_socket);
+    close(server_fd);
 
     RCLCPP_INFO(rclcpp::get_logger("CarlikeBotSystemHardware"), "Successfully deactivated!");
 
@@ -336,12 +352,15 @@ namespace car_gazebo
     // read servo position only position-----------------------------------position
 
     /*-----------------------------------read data from stm to pi to ros2 to python to cpp plugin-----------------------------------*/
+
     double received_state[3];
-    int reciv_state = recv(sockfd_si_to_serialcomms, received_state, sizeof(received_state), 0);
-    if (reciv_state == -1)
+    // always clear the buffer, before receiving data for frame matching
+    memset(received_state, 0, sizeof(received_state));
+    ssize_t valread = ::read(new_socket, &received_state, sizeof(received_state));
+    if (valread < 0)
     {
       RCLCPP_INFO(rclcpp::get_logger("CarlikeBotSystemHardware"), "Error receiving data");
-      return hardware_interface::CallbackReturn::ERROR;
+      return hardware_interface::return_type::ERROR;
     }
 
     // copy received data to car(rear_wheel_count, rear_wheel_position, front_wheel_steering)
@@ -360,13 +379,15 @@ namespace car_gazebo
     hw_interfaces_["steering"].state.position = car.steering_position; //-----------------------front servo steering values
 
     RCLCPP_INFO(
-        rclcpp::get_logger("CarlikeBotSystemHardware"), "Got position state: %.2f for joint '%s'.",
-        hw_interfaces_["steering"].state.position, hw_interfaces_["steering"].joint_name.c_str());
+        rclcpp::get_logger("CarlikeBotSystemHardware"), "Got steering position state: %f for joint '%s', time='%f'.",
+        hw_interfaces_["steering"].state.position, hw_interfaces_["steering"].joint_name.c_str(), period.seconds());
 
     RCLCPP_INFO(
-        rclcpp::get_logger("CarlikeBotSystemHardware"), "Got velocity state: %.2f for joint '%s'.",
+        rclcpp::get_logger("CarlikeBotSystemHardware"), "Got traction velocity state: %.2f for joint '%s'.",
         hw_interfaces_["traction"].state.velocity, hw_interfaces_["traction"].joint_name.c_str());
 
+    // clear the buffer
+    memset(received_state, 0, sizeof(received_state));
     return hardware_interface::return_type::OK;
   }
 
@@ -388,16 +409,19 @@ namespace car_gazebo
         rclcpp::get_logger("CarlikeBotSystemHardware"), "Got velocity command: %.2f for joint '%s'.",
         hw_interfaces_["traction"].command.velocity, hw_interfaces_["traction"].joint_name.c_str());
 
-    double command[] = {
-        hw_interfaces_["steering"].command.position,
-        hw_interfaces_["steering"].command.position,
-        hw_interfaces_["traction"].command.velocity};
+    // clear the buffer before sending
+    // memset(command, 0, sizeof(command));
+    float command[] = {
+        (float)hw_interfaces_["traction"].command.velocity,
+        (float)hw_interfaces_["steering"].command.position};
 
-    int sent_state = send(sockfd_si_to_serialcomms, command, sizeof(command), 0);
-    if (sent_state == -1)
+    // server sends data, client must listen data, done using recv function inside pose_receiver node
+    // always send all data, from start to end for frame matching
+    ssize_t bytes_sent = send(new_socket, &command, sizeof(command), 0);
+    if (bytes_sent < 0)
     {
       RCLCPP_INFO(rclcpp::get_logger("CarlikeBotSystemHardware"), "Error sending data");
-      return hardware_interface::CallbackReturn::ERROR;
+      return hardware_interface::return_type::ERROR;
     }
 
     return hardware_interface::return_type::OK;
