@@ -5,10 +5,10 @@
 
   <xacro:include filename="car.urdf.xacro" />
   <xacro:include filename="car_ros2_control.xacro" />
+  <xacro:include filename="car_lidar.xacro" />
 
   <xacro:carlikebot prefix="$(arg prefix)" />
 
-  <xacro:carlikebot_ros2_control
-    name="CarlikeBot" prefix="$(arg prefix)" />
+  <xacro:carlikebot_ros2_control name="CarlikeBot" prefix="$(arg prefix)" />
 
 </robot>
