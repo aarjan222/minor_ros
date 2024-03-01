@@ -23,9 +23,9 @@ SERVER_IP = "127.0.0.1"
 START_BYTE = bytes.fromhex('A5')
 DATA_LENGTH = 27
 
-rear_enc=0 
-rear_vel=0 
-front_steering=0
+# rear_enc=0
+# rear_vel=0
+# front_steering=0
 
 
 def quaternion_from_euler(ai, aj, ak):
@@ -57,9 +57,9 @@ class My_vel_sub(Node):
         super().__init__('my_car_pose')
 
         # read data from stm through serial
-        # self.serial_port = "/dev/ttyS0"
-        # self.baud_rate = 9600
-        # self.ser = serial.Serial(self.serial_port, self.baud_rate)
+        self.serial_port = "/dev/ttyS0"
+        self.baud_rate = 9600
+        self.ser = serial.Serial(self.serial_port, self.baud_rate)
 
         self.car_pose_ = self.create_publisher(Pose, 'car_pose', 10)
         self.timer = self.create_timer(0.1, self.timer_callback)
@@ -68,59 +68,59 @@ class My_vel_sub(Node):
     def timer_callback(self):
         global rear_enc, rear_vel, front_steering
         msg = Pose()
-        # while True:
-        #     ret, data = self.read()
+        while True:
+            ret, data = self.read()
 
-        #     if data is None:
-        #         break
-        #     if not ret:
-        #         break
-        #     if (len(data) != DATA_LENGTH):
-        #         break
+            if data is None:
+                break
+            if not ret:
+                break
+            if (len(data) != DATA_LENGTH):
+                break
 
-        #     data = struct.unpack('=cffffffcc', data)
-        #     start_byte, x_, y_, theta_, rear_enc, rear_vel, front_steering, hash_byte, newline_byte = data
-        
-        # if pi not connected to stm: send random feedback data for now
-        x_ = 1.3
-        y_ = 2.8
-        theta_ = 0.5
+            data = struct.unpack('=cffffffcc', data)
+            start_byte, x_, y_, theta_, rear_enc, rear_vel, front_steering, hash_byte, newline_byte = data
 
-        rear_enc = 300.2
-        rear_vel = 4
-        front_steering = 0.05
-        q = quaternion_from_euler(0, 0, theta_)
+            # if pi not connected to stm: send random feedback data for now
+            # x_ = 1.3
+            # y_ = 2.8
+            # theta_ = 0.5
 
-        msg.position.x = x_
-        msg.position.y = y_
-        msg.orientation.x = q[0]
-        msg.orientation.y = q[1]
-        msg.orientation.z = q[2]
-        msg.orientation.w = q[3]
+            # rear_enc = 300.2
+            # rear_vel = 4
+            # front_steering = 0.05
+            q = quaternion_from_euler(0, 0, theta_)
 
-        self.car_pose_.publish(msg)
-        # self.get_logger().info(f"x y theta is {x_} {y_} {theta_}")
-        self.i += 1
+            msg.position.x = x_
+            msg.position.y = y_
+            msg.orientation.x = q[0]
+            msg.orientation.y = q[1]
+            msg.orientation.z = q[2]
+            msg.orientation.w = q[3]
 
-    # def read(self):
-    #     while (self.ser.inWaiting() > DATA_LENGTH):
-    #         data_str = self.ser.readline()
-    #         data_str = bytes(data_str)
-    #         if len(data_str) < DATA_LENGTH:
-    #             continue
-    #         data_to_check_hash_for = data_str[1:-2]
+            self.car_pose_.publish(msg)
+            self.get_logger().info(f"x y theta is {x_} {y_} {theta_}")
+            self.i += 1
 
-    #         received_hash = data_str[-2]
-    #         hash_func = crc8()
-    #         hash_func.update(data_to_check_hash_for)
+    def read(self):
+        while (self.ser.inWaiting() > DATA_LENGTH):
+            data_str = self.ser.readline()
+            data_str = bytes(data_str)
+            if len(data_str) < DATA_LENGTH:
+                continue
+            data_to_check_hash_for = data_str[1:-2]
 
-    #         if hash_func.digest()[0] == received_hash:
-    #             return True, data_str
-    #         print(f"Hash fail: {received_hash} {hash_func.digest()[0]}")
-    #     return False, None
+            received_hash = data_str[-2]
+            hash_func = crc8()
+            hash_func.update(data_to_check_hash_for)
+
+            if hash_func.digest()[0] == received_hash:
+                return True, data_str
+            print(f"Hash fail: {received_hash} {hash_func.digest()[0]}")
+        return False, None
 
     def destroy_node(self):
-        # self.ser.close()
+        self.ser.close()
         self.get_logger().info('Serial Closed!!')
         super().destroy_node()
 

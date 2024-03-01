@@ -10,6 +10,7 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   pluginlib
   rclcpp
   rclcpp_lifecycle
+  yolo_msgs
 )
 
 # find dependencies
@@ -67,7 +68,7 @@ install(TARGETS car_gazebo
 )
 
 install(
-  DIRECTORY launch rviz config worlds transforms src urdf
+  DIRECTORY launch rviz config worlds transforms src urdf cv
   DESTINATION share/${PROJECT_NAME}
 )
 
@@ -80,6 +81,8 @@ install(PROGRAMS
   src/car_control.py
   src/pose_receiver.py
   src/teleop.py
+  cv/yolov8_ros2_pt.py
+  cv/yolov8_ros2_subscriber.py
   DESTINATION lib/${PROJECT_NAME})
 
 ## EXPORTS
