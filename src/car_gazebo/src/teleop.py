@@ -18,6 +18,7 @@ class TeleopToCarlikeBot(Node):
             10)
 
     def cmd_vel_callback(self, msg: Twist):
+        self.get_logger().info("Callback")
         twist_stamped_msg = TwistStamped()
         twist_stamped_msg.header = Header()
         twist_stamped_msg.header.stamp = self.get_clock().now().to_msg()
@@ -26,6 +27,7 @@ class TeleopToCarlikeBot(Node):
         twist_stamped_msg.twist.angular.z = 0.1 * msg.angular.z
         # Republish the TwistStamped message to the /bicycle_steering_controller/reference topic
         self.publisher_.publish(twist_stamped_msg)
+        self.get_logger().info(f"Got {msg=}")
 
 
 def main(args=None):

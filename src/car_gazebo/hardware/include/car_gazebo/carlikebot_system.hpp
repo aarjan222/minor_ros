@@ -22,6 +22,7 @@
 #include <vector>
 
 #include <chrono>
+#include <wiringSerial.h>
 #include <functional>
 #include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/pose.hpp"
@@ -37,12 +38,14 @@
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 
+#include "car_gazebo/crc8.hpp"
+
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <sys/types.h>
 #include <arpa/inet.h>
 #include <unistd.h>
-#define PORT 5555
+#define PORT 6666
 
 #include "car_gazebo/visibility_control.h"
 
@@ -121,6 +124,12 @@ namespace car_gazebo
     struct sockaddr_in address;
     int opt = 1;
     int addrlen = sizeof(address);
+
+    int sfd;
+    enum ReadState {WAIT_START_BYTE, READ_REST_DATA};
+
+    CRC_Hash crc{7};
+
   };
 
 } // namespace car_gazebo

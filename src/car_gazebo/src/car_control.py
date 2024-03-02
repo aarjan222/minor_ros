@@ -15,9 +15,9 @@ class My_vel_sub(Node):
             Twist, '/cmd_vel', self.listener_callback, 10)
 
         # send data to stm through serial
-        # self.serial_port = "/dev/ttyS0"
-        # self.baud_rate = 9600
-        # self.ser = serial.Serial(self.serial_port, self.baud_rate)
+        self.serial_port = "/dev/ttyS0"
+        self.baud_rate = 9600
+        self.ser = serial.Serial(self.serial_port, self.baud_rate)
 
 
     def listener_callback(self, msg):
@@ -35,10 +35,10 @@ class My_vel_sub(Node):
             bytes(struct.pack("c", hash_func.digest()))
 
         print(data_to_send)
-        # self.ser.write(data_to_send)
+        self.ser.write(data_to_send)
 
     def destroy_node(self):
-        # self.ser.close()
+        self.ser.close()
         self.get_logger().info('Serial Closed!!')
         super().destroy_node()
 

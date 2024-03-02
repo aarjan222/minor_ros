@@ -10,7 +10,6 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   pluginlib
   rclcpp
   rclcpp_lifecycle
-  yolo_msgs
 )
 
 # find dependencies
@@ -24,15 +23,24 @@ add_library(
   car_gazebo
   SHARED
   hardware/carlikebot_system.cpp
+  hardware/crc8.cpp
 )
 target_compile_features(car_gazebo PUBLIC cxx_std_17)
 target_include_directories(car_gazebo PUBLIC
 $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/hardware/include>
 $<INSTALL_INTERFACE:include/car_gazebo>
 )
+# find_library(WIRINGPI_LIBRARY libwiringPi.so.2)
 ament_target_dependencies(
   car_gazebo PUBLIC
   ${THIS_PACKAGE_INCLUDE_DEPENDS}
+)
+
+# target_compile_options(car_gazebo PRIVATE " -lwiringPi -lwiringPiDev ")
+
+target_link_libraries(
+    car_gazebo PRIVATE
+    wiringPi
 )
 
 # Causes the visibility macros to use dllexport rather than dllimport,

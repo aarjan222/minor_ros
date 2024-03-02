@@ -67,13 +67,13 @@ def generate_launch_description():
             "carlikebot_controllers.yaml",
         ]
     )
-    # rviz_config_file = PathJoinSubstitution(
-    #     [
-    #         FindPackageShare("ros2_control_demo_description"),
-    #         "carlikebot/rviz",
-    #         "carlikebot.rviz",
-    #     ]
-    # )
+    rviz_config_file = PathJoinSubstitution(
+        [
+            FindPackageShare("ros2_control_demo_description"),
+            "carlikebot/rviz",
+            "carlikebot.rviz",
+        ]
+    )
 
     # the steering controller libraries by default publish odometry on a separate topic than /tf
     control_node_remapped = Node(
@@ -154,9 +154,6 @@ def generate_launch_description():
     teleop = Node(package='car_gazebo',
                   executable='teleop.py', output='screen')
 
-    static_teleop = Node(package='car_gazebo',
-                         executable='static_teleop.py', output='screen')
-
     base_laser = Node(
         package='car_gazebo', executable='base_link_to_laser_frame.py', output='screen'
     )
@@ -183,9 +180,10 @@ def generate_launch_description():
         control_node_remapped,
         robot_state_pub_bicycle_node,
         joint_state_broadcaster_spawner,
-        delay_rviz_after_joint_state_broadcaster_spawner,
+        # delay_rviz_after_joint_state_broadcaster_spawner,
         delay_robot_controller_spawner_after_joint_state_broadcaster_spawner,
         teleop,
+        car_control,
         # static_teleop,
         # gamepad,
         # base_laser,
@@ -193,7 +191,6 @@ def generate_launch_description():
         # odom_base_link,
         # map_base_link,
         # imu,
-        # car_control,
     ]
 
     return LaunchDescription(declared_arguments + nodes)
