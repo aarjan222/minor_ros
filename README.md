@@ -6,6 +6,8 @@ Car like robot is simulated in real life using ros2_control. This package contai
 pip3 uninstall serial
 pip3 install pyserial==3.5
 
+sudo apt install ros-humble-xacro
+sudo apt install ros-humble-joint-state-publisher-gui 
 rosdep install --from-paths src --ignore-src -r -y
 
 colcon build

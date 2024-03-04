@@ -10,6 +10,7 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   pluginlib
   rclcpp
   rclcpp_lifecycle
+  mpu6050driver
 )
 
 # find dependencies
@@ -85,6 +86,7 @@ install(PROGRAMS
   transforms/base_link_to_laser_frame.py
   transforms/map_to_base_link.py
   transforms/odom_to_base_link.py
+  transforms/base_link_to_imu_frame.py
   src/imu_mobile_server.py
   src/car_control.py
   src/pose_receiver.py

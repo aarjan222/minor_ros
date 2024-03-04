@@ -3,3 +3,6 @@ ros-humble-hardware-interface
 xacro
 ros-humble-joint-state-publisher-gui
 install pyserial not serial
+
+libdw-dev libelf-dev ros-humble-backward-ros ros-humble-controller-interface ros-humble-controller-manager
+ros-humble-controller-manager-msgs ros-humble-realtime-tools ros-humble-ros2-control-test-assets

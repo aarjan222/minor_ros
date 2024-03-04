@@ -14,14 +14,14 @@ slam_toolbox:
     base_frame: base_link
     scan_topic: /scan
     use_map_saver: true
-    mode: localication #mapping
+    mode: mapping #localization
 
     # if you'd like to immediately start continuing a map at a given pose
     # or at the dock, but they are mutually exclusive, if pose is given
     # will use pose
-    map_file_name: /home/aarjan/minor_ros/my_map_serial
+    #map_file_name: test_steve
     # map_start_pose: [0.0, 0.0, 0.0]
-    map_start_at_dock: true
+    #map_start_at_dock: true
 
     debug_logging: false
     throttle_scans: 1
@@ -38,9 +38,9 @@ slam_toolbox:
     # General Parameters
     use_scan_matching: true
     use_scan_barycenter: true
-    minimum_travel_distance: 0.001
-    minimum_travel_heading: 0.001
-    scan_buffer_size: 20
+    minimum_travel_distance: 0.5
+    minimum_travel_heading: 0.5
+    scan_buffer_size: 10
     scan_buffer_maximum_scan_distance: 10.0
     link_match_minimum_response_fine: 0.1
     link_scan_maximum_distance: 1.5

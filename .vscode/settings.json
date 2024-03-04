@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "vector": "cpp"
+    },
+    "cmake.sourceDirectory": "/home/rpi2/minor_ros/build/yolo_msgs/yolo_msgs__py"
+}

@@ -28,6 +28,8 @@ from tf2_ros import TransformBroadcaster
 
 # from turtlesim.msg import Pose
 from geometry_msgs.msg import Pose
+from geometry_msgs.msg import PoseWithCovarianceStamped
+from geometry_msgs.msg import PoseWithCovariance
 
 
 # This function is a stripped down version of the code in
@@ -70,13 +72,13 @@ class FramePublisher(Node):
         # Subscribe to a turtle{1}{2}/pose topic and call handle_turtle_pose
         # callback function on each message
         self.subscription = self.create_subscription(
-            Pose,
+            PoseWithCovarianceStamped,
             'pose',
             self.handle_map,
-            1)
+            50)
         self.subscription  # prevent unused variable warning
 
-    def handle_map(self, msg: Pose):
+    def handle_map(self, msg: PoseWithCovarianceStamped):
         t = TransformStamped()
 
         # Read message content and assign it to
@@ -95,9 +97,9 @@ class FramePublisher(Node):
         # and this why we set rotation in x and y to 0 and obtain
         # rotation in z axis from the message
         # q = quaternion_from_euler(0, 0, msg.orientation.w)
-        t.transform.rotation.x = 0.0
-        t.transform.rotation.y = 0.0
-        t.transform.rotation.z = 0.0
+        t.transform.rotation.x = msg.orientation.x
+        t.transform.rotation.y = msg.orientation.y
+        t.transform.rotation.z = msg.orientation.z
         t.transform.rotation.w = msg.orientation.w
         # self.get_logger().info(str("tranform on process"))
 

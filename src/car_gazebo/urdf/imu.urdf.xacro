@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="inertial_cylinder" params="mass length radius *origin">
+        <inertial>
+            <xacro:insert_block name="origin" />
+            <mass value="${mass}" />
+            <inertia ixx="${(1/12) * mass * (3*radius*radius + length*length)}" ixy="0.0" ixz="0.0"
+                iyy="${(1/12) * mass * (3*radius*radius + length*length)}" iyz="0.0"
+                izz="${(1/2) * mass * (radius*radius)}" />
+        </inertial>
+    </xacro:macro>
+
+
+    <xacro:macro name="inertial_box" params="mass x y z *origin">
+        <inertial>
+            <xacro:insert_block name="origin" />
+            <mass value="${mass}" />
+            <inertia ixx="${(1/12) * mass * (y*y+z*z)}" ixy="0.0" ixz="0.0"
+                iyy="${(1/12) * mass * (x*x+z*z)}" iyz="0.0"
+                izz="${(1/12) * mass * (x*x+y*y)}" />
+        </inertial>
+    </xacro:macro>
+
+    <link name="imu_link">
+        <visual>
+            <geometry>
+                <!-- <cylinder radius="0.073" length="0.07" /> -->
+                <box size="0.015 0.02 0.0001"></box>
+            </geometry>
+            <material name="blue" />
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.015 0.02 0.0001"></box>
+            </geometry>
+        </collision>
+        <xacro:inertial_box mass="0.001" x="0.015" y="0.02" z="0.0001">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        </xacro:inertial_box>
+    </link>
+
+    <joint name="imu_joint" type="fixed">
+        <parent link="chassis_link" />
+        <child link="imu_link" />
+        <origin xyz="-0.13 -0.01 0.18" rpy="0 0 0" />
+    </joint>
+</robot>
