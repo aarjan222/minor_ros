@@ -67,13 +67,13 @@ def generate_launch_description():
             "carlikebot_controllers.yaml",
         ]
     )
-    # rviz_config_file = PathJoinSubstitution(
-    #     [
-    #         FindPackageShare("ros2_control_demo_description"),
-    #         "carlikebot/rviz",
-    #         "carlikebot.rviz",
-    #     ]
-    # )
+    rviz_config_file = PathJoinSubstitution(
+        [
+            FindPackageShare("ros2_control_demo_description"),
+            "carlikebot/rviz",
+            "carlikebot.rviz",
+        ]
+    )
 
     # the steering controller libraries by default publish odometry on a separate topic than /tf
     control_node_remapped = Node(
@@ -154,21 +154,19 @@ def generate_launch_description():
     teleop = Node(package='car_gazebo',
                   executable='teleop.py', output='screen')
 
-    static_teleop = Node(package='car_gazebo',
-                         executable='static_teleop.py', output='screen')
-
     base_laser = Node(
         package='car_gazebo', executable='base_link_to_laser_frame.py', output='screen'
     )
 
-    fake_encoder_odom_topic = Node(
-        package='car_gazebo', executable='fake_encoder_odom_topic.py', output='screen')
+    base_imu = Node(
+        package='car_gazebo', executable='base_link_to_imu_frame.py', output='screen'
+    )
 
     map_base_link = Node(
         package='car_gazebo', executable='map_to_base_link.py', output='screen')
 
     odom_base_link = Node(
-        package='car_gazebo', executable='odom_to_base_link.py', output='screen')
+        package='car_gazebo', executable='odom_to_base_link.py', output='screen') 
 
     imu = Node(package='car_gazebo',
                executable='imu_mobile_server.py', output='screen')
@@ -177,24 +175,60 @@ def generate_launch_description():
                        executable='car_control.py', output='screen')
     pose_receiver = Node(package='car_gazebo',
                          executable='pose_receiver.py', output='screen')
+    
+    ekf_node = Node(
+        package='robot_localization',
+            executable='ekf_node',
+            name='ekf_filter_node',
+            output='screen',
+            parameters=[os.path.join(get_package_share_directory("car_gazebo"), 'config', 'ekf_param.yaml')],
+    )
 
+    share_dir = 'mpu6050driver'
+    
+    slam = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(
+            get_package_share_directory('car_gazebo'), 'launch', 'online_async_launch.py')]),
+    )
+
+    imu_node = Node(
+        package='mpu6050driver',
+        executable='mpu6050driver',
+        name='mpu6050driver_node',
+        output="screen",
+        emulate_tty=True,
+        parameters=[os.path.join(share_dir, 'params', 'mpu6050.yaml')],
+    )  
+    
+    rplidar = Node(
+        package='rplidar_ros',
+        executable='rplidar_composition',
+        # output='screen',
+        parameters=[{
+                'serial_port': '/dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0',
+                'frame_id': 'lidar_link',
+                'angle_compensate': True,
+                'serial_baudrate': 115200,
+                'scan_mode': 'Boost'
+        }]
+    )
+ 
     nodes = [
         control_node,
         control_node_remapped,
         robot_state_pub_bicycle_node,
         joint_state_broadcaster_spawner,
-        delay_rviz_after_joint_state_broadcaster_spawner,
+        # delay_rviz_after_joint_state_broadcaster_spawner,
         delay_robot_controller_spawner_after_joint_state_broadcaster_spawner,
+        rplidar,
         teleop,
+        imu_node,
+        odom_base_link,
+        map_base_link,
+        ekf_node,
+        # car_control,
         # static_teleop,
         # gamepad,
-        # base_laser,
-        # fake_encoder_odom_topic,
-        # odom_base_link,
-        # map_base_link,
-        # imu,
-        # car_control,
-        # pose_receiver,
     ]
 
     return LaunchDescription(declared_arguments + nodes)

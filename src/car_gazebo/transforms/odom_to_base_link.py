@@ -26,6 +26,7 @@ from tf2_ros import TransformBroadcaster
 
 from turtlesim.msg import Pose
 from geometry_msgs.msg import Pose
+from nav_msgs.msg import Odometry
 
 
 # This function is a stripped down version of the code in
@@ -69,13 +70,13 @@ class FramePublisher(Node):
         # Subscribe to a turtle{1}{2}/pose topic and call handle_turtle_pose
         # callback function on each message
         self.subscription = self.create_subscription(
-            Pose,
-            'encoder_odom', # replace this topic with real car's odometry
+            Odometry,
+            'bicycle_steering_controller/odometry', # replace this topic with real car's odometry
             self.handle_odom,
-            1)
+            50)
         self.subscription  # prevent unused variable warning
 
-    def handle_odom(self, msg:Pose):
+    def handle_odom(self, msg:Odometry):
         t = TransformStamped()
 
         # Read message content and assign it to
@@ -88,18 +89,18 @@ class FramePublisher(Node):
 
         # Turtle only exists in 2D, thus we get x and y translation
         # coordinates from the message and set the z coordinate to 0
-        t.transform.translation.x = msg.position.x
-        t.transform.translation.y = msg.position.y
+        t.transform.translation.x = msg.pose.pose.position.x
+        t.transform.translation.y = msg.pose.pose.position.y
         t.transform.translation.z = 0.0
 
         # For the same reason, turtle can only rotate around one axis
         # and this why we set rotation in x and y to 0 and obtain
         # rotation in z axis from the message
         # q = quaternion_from_euler(0, 0, msg.orientation.w)
-        t.transform.rotation.x = 0.0
-        t.transform.rotation.y = 0.0
-        t.transform.rotation.z = 0.0
-        t.transform.rotation.w = msg.orientation.w
+        t.transform.rotation.x = msg.pose.pose.orientation.x
+        t.transform.rotation.y = msg.pose.pose.orientation.y
+        t.transform.rotation.z = msg.pose.pose.orientation.z
+        t.transform.rotation.w = msg.pose.pose.orientation.w
 
         # Send the transformation
         self.tf_broadcaster.sendTransform(t)

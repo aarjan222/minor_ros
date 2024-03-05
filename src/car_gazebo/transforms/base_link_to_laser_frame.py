@@ -51,20 +51,20 @@ class StaticFramePublisher(Node):
         t = TransformStamped()
 
         t.header.stamp = self.get_clock().now().to_msg()
-        t.header.frame_id = 'base_link'
+        t.header.frame_id = 'lidar_link'
         t.child_frame_id = 'laser_frame'
 
         t.transform.translation.x = 0.0
         t.transform.translation.y = 0.0
-        t.transform.translation.z = 0.6
+        t.transform.translation.z = 0.0
         quat = quaternion_from_euler(0.0, 0.0, 0.0)
         t.transform.rotation.x = quat[0]
         t.transform.rotation.y = quat[1]
         t.transform.rotation.z = quat[2]
         t.transform.rotation.w = quat[3]
-
+    
         self.tf_static_broadcaster.sendTransform(t)
-        self.get_logger().info(str("base_link to laser_frame transformed!"))
+        self.get_logger().info(str("lidar_link to laser_frame transformed!"))
 
 
 def main():

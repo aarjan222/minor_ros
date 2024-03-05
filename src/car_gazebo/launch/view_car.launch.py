@@ -41,14 +41,6 @@ def generate_launch_description():
     ),
     declared_arguments.append(
         DeclareLaunchArgument(
-            "gui",
-            default_value="true",
-            description="Start Rviz2 and Joint State Publisher gui automatically \
-        with this launch file.",
-        )
-    )
-    declared_arguments.append(
-        DeclareLaunchArgument(
             "prefix",
             default_value='""',
             description="Prefix of the joint names, useful for \
@@ -79,15 +71,10 @@ def generate_launch_description():
     )
     robot_description = {"robot_description": robot_description_content}
 
-    # rviz_config_file = PathJoinSubstitution(
-    #     [FindPackageShare(description_package),
-    #      "car_gazebo/rviz", "def.rviz"]
-    # )
 
     joint_state_publisher_node = Node(
-        package="joint_state_publisher_gui",
-        executable="joint_state_publisher_gui",
-        condition=IfCondition(gui),
+        package="joint_state_publisher",
+        executable="joint_state_publisher",
     )
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
@@ -95,19 +82,10 @@ def generate_launch_description():
         output="both",
         parameters=[robot_description],
     )
-    rviz_node = Node(
-        package="rviz2",
-        executable="rviz2",
-        name="rviz2",
-        output="log",
-        # arguments=["-d", rviz_config_file],
-        condition=IfCondition(gui),
-    )
 
     nodes = [
         joint_state_publisher_node,
         robot_state_publisher_node,
-        rviz_node,
     ]
 
     return LaunchDescription(declared_arguments + nodes)

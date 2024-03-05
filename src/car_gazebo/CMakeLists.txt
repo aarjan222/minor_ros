@@ -10,6 +10,7 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   pluginlib
   rclcpp
   rclcpp_lifecycle
+  mpu6050driver
 )
 
 # find dependencies
@@ -23,15 +24,24 @@ add_library(
   car_gazebo
   SHARED
   hardware/carlikebot_system.cpp
+  hardware/crc8.cpp
 )
 target_compile_features(car_gazebo PUBLIC cxx_std_17)
 target_include_directories(car_gazebo PUBLIC
 $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/hardware/include>
 $<INSTALL_INTERFACE:include/car_gazebo>
 )
+# find_library(WIRINGPI_LIBRARY libwiringPi.so.2)
 ament_target_dependencies(
   car_gazebo PUBLIC
   ${THIS_PACKAGE_INCLUDE_DEPENDS}
+)
+
+# target_compile_options(car_gazebo PRIVATE " -lwiringPi -lwiringPiDev ")
+
+target_link_libraries(
+    car_gazebo PRIVATE
+    wiringPi
 )
 
 # Causes the visibility macros to use dllexport rather than dllimport,
@@ -59,14 +69,6 @@ install(
   DIRECTORY hardware/include/
   DESTINATION include/car_gazebo
 )
-# install(
-#   DIRECTORY description/launch description/ros2_control description/urdf
-#   DESTINATION share/car_gazebo
-# )
-# install(
-#   DIRECTORY bringup/launch bringup/config
-#   DESTINATION share/car_gazebo
-# )
 install(TARGETS car_gazebo
   EXPORT export_car_gazebo
   ARCHIVE DESTINATION lib
@@ -75,7 +77,7 @@ install(TARGETS car_gazebo
 )
 
 install(
-  DIRECTORY launch rviz config worlds transforms src urdf
+  DIRECTORY launch rviz config worlds transforms src urdf cv
   DESTINATION share/${PROJECT_NAME}
 )
 
@@ -84,11 +86,13 @@ install(PROGRAMS
   transforms/base_link_to_laser_frame.py
   transforms/map_to_base_link.py
   transforms/odom_to_base_link.py
+  transforms/base_link_to_imu_frame.py
   src/imu_mobile_server.py
   src/car_control.py
   src/pose_receiver.py
   src/teleop.py
-  src/static_teleop.py
+  cv/yolov8_ros2_pt.py
+  cv/yolov8_ros2_subscriber.py
   DESTINATION lib/${PROJECT_NAME})
 
 ## EXPORTS

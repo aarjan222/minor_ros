@@ -5,7 +5,9 @@
 
   <xacro:include filename="car.urdf.xacro" />
   <xacro:include filename="car_ros2_control.xacro" />
-  <xacro:include filename="car_lidar.xacro" />
+  <xacro:include filename="lidar.urdf.xacro" />
+  <xacro:include filename="imu.urdf.xacro" />
+  <!-- <xacro:include filename="camera.urdf.xacro" /> -->
 
   <xacro:carlikebot prefix="$(arg prefix)" />
 

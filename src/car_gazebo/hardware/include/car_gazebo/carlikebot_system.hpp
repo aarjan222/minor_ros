@@ -21,6 +21,12 @@
 #include <utility>
 #include <vector>
 
+#include <chrono>
+#include <wiringSerial.h>
+#include <functional>
+#include "rclcpp/rclcpp.hpp"
+#include "geometry_msgs/msg/pose.hpp"
+
 #include "hardware_interface/handle.hpp"
 #include "hardware_interface/hardware_info.hpp"
 #include "hardware_interface/system_interface.hpp"
@@ -32,10 +38,25 @@
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 
+#include "car_gazebo/crc8.hpp"
+
+#include <sys/socket.h>
+#include <sys/un.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#define PORT 6666
+
 #include "car_gazebo/visibility_control.h"
 
 namespace car_gazebo
 {
+  struct Car
+  {
+    float traction_wheel_position;
+    float traction_wheel_velocity;
+    float steering_position;
+  };
   struct JointValue
   {
     double position{0.0};
@@ -94,8 +115,21 @@ namespace car_gazebo
     double hw_stop_sec_;
 
     // std::vector<std::tuple<std::string, double, double>>
-    //   hw_interfaces_;  // name of joint, state, command
+    //     hw_interfaces_; // name of joint, state, command
     std::map<std::string, Joint> hw_interfaces_;
+
+    Car car;
+
+    int server_fd, new_socket;
+    struct sockaddr_in address;
+    int opt = 1;
+    int addrlen = sizeof(address);
+
+    int sfd;
+    enum ReadState {WAIT_START_BYTE, READ_REST_DATA};
+
+    CRC_Hash crc{7};
+
   };
 
 } // namespace car_gazebo
