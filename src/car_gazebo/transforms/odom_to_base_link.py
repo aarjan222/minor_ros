@@ -71,7 +71,7 @@ class FramePublisher(Node):
         # callback function on each message
         self.subscription = self.create_subscription(
             Odometry,
-            'odometry/filtered', # replace this topic with real car's odometry
+            'bicycle_steering_controller/odometry', # replace this topic with real car's odometry
             self.handle_odom,
             50)
         self.subscription  # prevent unused variable warning

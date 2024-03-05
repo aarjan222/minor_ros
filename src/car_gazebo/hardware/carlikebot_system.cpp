@@ -421,13 +421,13 @@ namespace car_gazebo
     // update front_wheel_joint position
     hw_interfaces_["steering"].state.position = car.steering_position; //-----------------------front servo steering values
 
-    RCLCPP_INFO(
-        rclcpp::get_logger("CarlikeBotSystemHardware"), "Got steering position state: %f for joint '%s', time='%f'.",
-        hw_interfaces_["steering"].state.position, hw_interfaces_["steering"].joint_name.c_str(), period.seconds());
+    // RCLCPP_INFO(
+    //     rclcpp::get_logger("CarlikeBotSystemHardware"), "Got steering position state: %f for joint '%s', time='%f'.",
+    //     hw_interfaces_["steering"].state.position, hw_interfaces_["steering"].joint_name.c_str(), period.seconds());
 
-    RCLCPP_INFO(
-        rclcpp::get_logger("CarlikeBotSystemHardware"), "Got traction velocity state: %.2f for joint '%s'.",
-        hw_interfaces_["traction"].state.velocity, hw_interfaces_["traction"].joint_name.c_str());
+    // RCLCPP_INFO(
+    //     rclcpp::get_logger("CarlikeBotSystemHardware"), "Got traction velocity state: %.2f for joint '%s'.",
+    //     hw_interfaces_["traction"].state.velocity, hw_interfaces_["traction"].joint_name.c_str());
 
     // clear the buffer
     return hardware_interface::return_type::OK;
@@ -443,13 +443,13 @@ namespace car_gazebo
     // front_wheel_joint
     // set servo position for front steering-------------------------------position
 
-    RCLCPP_INFO(
-        rclcpp::get_logger("CarlikeBotSystemHardware"), "Got position command: %.2f for joint '%s'.",
-        hw_interfaces_["steering"].command.position, hw_interfaces_["steering"].joint_name.c_str());
+    // RCLCPP_INFO(
+    //     rclcpp::get_logger("CarlikeBotSystemHardware"), "Got position command: %.2f for joint '%s'.",
+    //     hw_interfaces_["steering"].command.position, hw_interfaces_["steering"].joint_name.c_str());
 
-    RCLCPP_INFO(
-        rclcpp::get_logger("CarlikeBotSystemHardware"), "Got velocity command: %.2f for joint '%s'.",
-        hw_interfaces_["traction"].command.velocity, hw_interfaces_["traction"].joint_name.c_str());
+    // RCLCPP_INFO(
+    //     rclcpp::get_logger("CarlikeBotSystemHardware"), "Got velocity command: %.2f for joint '%s'.",
+    //     hw_interfaces_["traction"].command.velocity, hw_interfaces_["traction"].joint_name.c_str());
 
     // clear the buffer before sending
     // memset(command, 0, sizeof(command));

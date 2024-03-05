@@ -181,7 +181,7 @@ def generate_launch_description():
             executable='ekf_node',
             name='ekf_filter_node',
             output='screen',
-            parameters=[os.path.join(get_package_share_directory("car_gazebo"), 'config', 'ekf.yaml')],
+            parameters=[os.path.join(get_package_share_directory("car_gazebo"), 'config', 'ekf_param.yaml')],
     )
 
     share_dir = 'mpu6050driver'
@@ -203,13 +203,13 @@ def generate_launch_description():
     rplidar = Node(
         package='rplidar_ros',
         executable='rplidar_composition',
-        output='screen',
+        # output='screen',
         parameters=[{
                 'serial_port': '/dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0',
-                'frame_id': 'laser_frame',
+                'frame_id': 'lidar_link',
                 'angle_compensate': True,
                 'serial_baudrate': 115200,
-                'scan_mode': 'Standard'
+                'scan_mode': 'Boost'
         }]
     )
  
@@ -221,14 +221,11 @@ def generate_launch_description():
         # delay_rviz_after_joint_state_broadcaster_spawner,
         delay_robot_controller_spawner_after_joint_state_broadcaster_spawner,
         rplidar,
-        # slam, 
         teleop,
-        ekf_node,
         imu_node,
-        base_laser,
-        base_imu,
         odom_base_link,
         map_base_link,
+        ekf_node,
         # car_control,
         # static_teleop,
         # gamepad,

@@ -29,7 +29,7 @@ from tf2_ros import TransformBroadcaster
 # from turtlesim.msg import Pose
 from geometry_msgs.msg import Pose
 from geometry_msgs.msg import PoseWithCovarianceStamped
-from geometry_msgs.msg import PoseWithCovariance
+# from geometry_msgs.msg import PoseWithCovariance
 
 
 # This function is a stripped down version of the code in
@@ -89,18 +89,18 @@ class FramePublisher(Node):
 
         # Turtle only exists in 2D, thus we get x and y translation
         # coordinates from the message and set the z coordinate to 0
-        t.transform.translation.x = msg.position.x
-        t.transform.translation.y = msg.position.y
+        t.transform.translation.x = msg.pose.pose.position.x
+        t.transform.translation.y = msg.pose.pose.position.y
         t.transform.translation.z = 0.0
 
         # For the same reason, turtle can only rotate around one axis
         # and this why we set rotation in x and y to 0 and obtain
         # rotation in z axis from the message
         # q = quaternion_from_euler(0, 0, msg.orientation.w)
-        t.transform.rotation.x = msg.orientation.x
-        t.transform.rotation.y = msg.orientation.y
-        t.transform.rotation.z = msg.orientation.z
-        t.transform.rotation.w = msg.orientation.w
+        t.transform.rotation.x = msg.pose.pose.orientation.x
+        t.transform.rotation.y = msg.pose.pose.orientation.y
+        t.transform.rotation.z = msg.pose.pose.orientation.z
+        t.transform.rotation.w = msg.pose.pose.orientation.w
         # self.get_logger().info(str("tranform on process"))
 
         # Send the transformation
