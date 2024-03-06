@@ -23,6 +23,10 @@ struct Odometry
   float x;
   float y;
   float theta;
+  float rear_encoder_val;
+  float rear_wheel_velocity;
+  float front_servo_steering;
+
 };
 
 struct ROSBridgeTransmit
