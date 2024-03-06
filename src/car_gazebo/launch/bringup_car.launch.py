@@ -67,6 +67,7 @@ def generate_launch_description():
             "carlikebot_controllers.yaml",
         ]
     )
+
     rviz_config_file = PathJoinSubstitution(
         [
             FindPackageShare("car_gazebo"),

@@ -357,6 +357,24 @@ namespace car_gazebo
   hardware_interface::return_type CarlikeBotSystemHardware::read(
       const rclcpp::Time & /*time*/, const rclcpp::Duration &period)
   {
+    // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
+
+    hw_interfaces_["steering"].state.position = hw_interfaces_["steering"].command.position;
+
+    hw_interfaces_["traction"].state.velocity = hw_interfaces_["traction"].command.velocity;
+    hw_interfaces_["traction"].state.position +=
+        hw_interfaces_["traction"].state.velocity * period.seconds();
+
+    // RCLCPP_INFO(
+    //     rclcpp::get_logger("CarlikeBotSystemHardware"), "Got position state: %.2f for joint '%s'.",
+    //     hw_interfaces_["steering"].command.position, hw_interfaces_["steering"].joint_name.c_str());
+
+    // RCLCPP_INFO(
+    //     rclcpp::get_logger("CarlikeBotSystemHardware"), "Got velocity state: %.2f for joint '%s'.",
+    //     hw_interfaces_["traction"].command.velocity, hw_interfaces_["traction"].joint_name.c_str());
+
+    // END: This part here is for exemplary purposes - Please do not copy to your production code
+
     // rear_wheel_joint
     // read encoder values of both two rear wheels-------------------------position
     // read velocity values of both two rear wheels------------------------velocity

@@ -185,7 +185,7 @@
                     iyy="0.000270" iyz="0.0"
                     izz="0.000426" />
             </inertial>
- 
+
         </link>
 
         <joint name="${prefix}rear_left_wheel_joint" type="continuous">
