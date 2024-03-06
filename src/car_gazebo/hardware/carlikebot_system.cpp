@@ -216,13 +216,14 @@ namespace car_gazebo
 
     // RCLCPP_INFO(rclcpp::get_logger("CarlikeBotSystemHardware"), "Connection Established between server and client. Now Start read and write from both sides. ENJOY!!!!");
 
-    if (( sfd=serialOpen("/dev/ttyS0",9600) )<0 ) {
-      fprintf(stderr,"Unable to open serial device: %s\n",strerror(errno));
+    if ((sfd = serialOpen("/dev/ttyS0", 9600)) < 0)
+    {
+      fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
       RCLCPP_ERROR(
           rclcpp::get_logger("CarlikeBotSystemHardware"), "Error opening serial to stm...");
       return hardware_interface::CallbackReturn::ERROR;
     }
-    
+
     RCLCPP_INFO(rclcpp::get_logger("CarlikeBotSystemHardware"), "Connection Established (stm uart). Now Start read and write from both sides. ENJOY!!!!");
 
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -370,33 +371,37 @@ namespace car_gazebo
 
     uint8_t recv_data[DATA_SIZE];
 
-    if (serialDataAvail(sfd) < DATA_SIZE) {
-      return hardware_interface::return_type::OK;
-    }
+    while (1)
+    {
 
-    ReadState state = WAIT_START_BYTE;
+      if (serialDataAvail(sfd) < DATA_SIZE)
+      {
+        break;
+      }
 
-    while (1) {  
+      ReadState state = WAIT_START_BYTE;
       uint8_t ch = serialGetchar(sfd);
 
-      if (ch == START_BYTE) {
+      if (ch == START_BYTE)
+      {
         state = READ_REST_DATA;
-        break;
+        for (int i = 1; i < DATA_SIZE; i++)
+        {
+          recv_data[i] = (uint8_t)serialGetchar(sfd);
+        }
       }
     }
 
-    for (int i = 1; i < DATA_SIZE; i++) {
-      recv_data[i] = (uint8_t) serialGetchar(sfd);
-    }
+    uint8_t hash = crc.get_Hash(recv_data + 1, DATA_SIZE - 3);
 
-    uint8_t hash = crc.get_Hash(recv_data+1, DATA_SIZE-3);
-
-    if (hash != recv_data[DATA_SIZE-2]) {
+    if (hash != recv_data[DATA_SIZE - 2])
+    {
       RCLCPP_INFO(rclcpp::get_logger("CarlikeBotSystemHardware"), "Error: hash failed, "
-      "got %d, expected %d", hash, recv_data[DATA_SIZE-2]);
+                                                                  "got %d, expected %d",
+                  hash, recv_data[DATA_SIZE - 2]);
       return hardware_interface::return_type::OK;
     }
-    
+
     // always clear the buffer, before receiving data for frame matching
     // memset(received_state, 0, sizeof(received_state));
     // ssize_t valread = ::read(new_socket, &received_state, sizeof(received_state));
@@ -407,7 +412,7 @@ namespace car_gazebo
     // }
 
     // copy received data to car(rear_wheel_count, rear_wheel_position, front_wheel_steering)
-    memcpy(&car, (recv_data)+1, sizeof(car));
+    memcpy(&car, (recv_data) + 1, sizeof(car));
 
     // feedback if no car odometry, you can uncomment this line, your car starts to move in rviz as according to your feedback
     // car.traction_wheel_position += 100.0;
@@ -421,13 +426,13 @@ namespace car_gazebo
     // update front_wheel_joint position
     hw_interfaces_["steering"].state.position = car.steering_position; //-----------------------front servo steering values
 
-    // RCLCPP_INFO(
-    //     rclcpp::get_logger("CarlikeBotSystemHardware"), "Got steering position state: %f for joint '%s', time='%f'.",
-    //     hw_interfaces_["steering"].state.position, hw_interfaces_["steering"].joint_name.c_str(), period.seconds());
+    RCLCPP_INFO(
+        rclcpp::get_logger("CarlikeBotSystemHardware"), "Got steering position state: %f for joint '%s', time='%f'.",
+        hw_interfaces_["steering"].state.position, hw_interfaces_["steering"].joint_name.c_str(), period.seconds());
 
-    // RCLCPP_INFO(
-    //     rclcpp::get_logger("CarlikeBotSystemHardware"), "Got traction velocity state: %.2f for joint '%s'.",
-    //     hw_interfaces_["traction"].state.velocity, hw_interfaces_["traction"].joint_name.c_str());
+    RCLCPP_INFO(
+        rclcpp::get_logger("CarlikeBotSystemHardware"), "Got traction velocity state: %.4f for joint '%s'.",
+        hw_interfaces_["traction"].state.velocity, hw_interfaces_["traction"].joint_name.c_str());
 
     // clear the buffer
     return hardware_interface::return_type::OK;
@@ -443,13 +448,13 @@ namespace car_gazebo
     // front_wheel_joint
     // set servo position for front steering-------------------------------position
 
-    // RCLCPP_INFO(
-    //     rclcpp::get_logger("CarlikeBotSystemHardware"), "Got position command: %.2f for joint '%s'.",
-    //     hw_interfaces_["steering"].command.position, hw_interfaces_["steering"].joint_name.c_str());
+    RCLCPP_INFO(
+        rclcpp::get_logger("CarlikeBotSystemHardware"), "Got position command: %.2f for joint '%s'.",
+        hw_interfaces_["steering"].command.position, hw_interfaces_["steering"].joint_name.c_str());
 
-    // RCLCPP_INFO(
-    //     rclcpp::get_logger("CarlikeBotSystemHardware"), "Got velocity command: %.2f for joint '%s'.",
-    //     hw_interfaces_["traction"].command.velocity, hw_interfaces_["traction"].joint_name.c_str());
+    RCLCPP_INFO(
+        rclcpp::get_logger("CarlikeBotSystemHardware"), "Got velocity command: %.2f for joint '%s'.",
+        hw_interfaces_["traction"].command.velocity, hw_interfaces_["traction"].joint_name.c_str());
 
     // clear the buffer before sending
     // memset(command, 0, sizeof(command));
@@ -459,9 +464,9 @@ namespace car_gazebo
 
     uint8_t send_data[10];
     send_data[0] = 0xA5;
-    memcpy(send_data+1, command, sizeof(command));
-    send_data[9] = crc.get_Hash(send_data+1, 8);
-    for (int i = 0; i < 10; i++) 
+    memcpy(send_data + 1, command, sizeof(command));
+    send_data[9] = crc.get_Hash(send_data + 1, 8);
+    for (int i = 0; i < 10; i++)
     {
       serialPutchar(sfd, send_data[i]);
     }

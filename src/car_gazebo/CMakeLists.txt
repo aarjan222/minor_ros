@@ -82,14 +82,8 @@ install(
 )
 
 install(PROGRAMS
-  transforms/fake_encoder_odom_topic.py
-  transforms/base_link_to_laser_frame.py
   transforms/map_to_base_link.py
   transforms/odom_to_base_link.py
-  transforms/base_link_to_imu_frame.py
-  src/imu_mobile_server.py
-  src/car_control.py
-  src/pose_receiver.py
   src/teleop.py
   cv/yolov8_ros2_pt.py
   cv/yolov8_ros2_subscriber.py

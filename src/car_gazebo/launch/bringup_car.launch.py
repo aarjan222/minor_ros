@@ -69,9 +69,9 @@ def generate_launch_description():
     )
     rviz_config_file = PathJoinSubstitution(
         [
-            FindPackageShare("ros2_control_demo_description"),
-            "carlikebot/rviz",
-            "carlikebot.rviz",
+            FindPackageShare("car_gazebo"),
+            "rviz",
+            "def.rviz",
         ]
     )
 
@@ -111,7 +111,7 @@ def generate_launch_description():
         executable="rviz2",
         name="rviz2",
         output="log",
-        # arguments=["-d", rviz_config_file],
+        arguments=["-d", rviz_config_file],
         condition=IfCondition(gui),
     )
 
@@ -170,11 +170,6 @@ def generate_launch_description():
 
     imu = Node(package='car_gazebo',
                executable='imu_mobile_server.py', output='screen')
-
-    car_control = Node(package='car_gazebo',
-                       executable='car_control.py', output='screen')
-    pose_receiver = Node(package='car_gazebo',
-                         executable='pose_receiver.py', output='screen')
     
     ekf_node = Node(
         package='robot_localization',
@@ -225,9 +220,7 @@ def generate_launch_description():
         imu_node,
         odom_base_link,
         map_base_link,
-        ekf_node,
-        # car_control,
-        # static_teleop,
+        # ekf_node,
         # gamepad,
     ]
 
