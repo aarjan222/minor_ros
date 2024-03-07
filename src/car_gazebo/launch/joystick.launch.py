@@ -20,7 +20,7 @@ def generate_launch_description():
         executable='teleop_node',
         name='teleop_node',
         parameters=[joy_params],
-        remappings=[('/cmd_vel', '/cmd_vel_joy')]
+        remappings=[('/cmd_vel', '/bicycle_steering_controller/reference')]
     )
 
     return LaunchDescription([

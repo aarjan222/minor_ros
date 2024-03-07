@@ -13,21 +13,21 @@ class TeleopToCarlikeBot(Node):
         self.get_logger().info("Init")
         self.subscription = self.create_subscription(
             Twist,
-            '/cmd_vel',
+            '/cmd_vel_joy',
             self.cmd_vel_callback,
             10)
 
     def cmd_vel_callback(self, msg: Twist):
-        self.get_logger().info("Callback")
+        # self.get_logger().info("Callback")
         twist_stamped_msg = TwistStamped()
         twist_stamped_msg.header = Header()
         twist_stamped_msg.header.stamp = self.get_clock().now().to_msg()
         # twist_stamped_msg.twist = msg*0.1
         twist_stamped_msg.twist.linear.x = 0.06*msg.linear.x
-        twist_stamped_msg.twist.angular.z = 0.05*msg.angular.z
+        twist_stamped_msg.twist.angular.z = -0.05*msg.angular.z
         # Republish the TwistStamped message to the /bicycle_steering_controller/reference topic
         self.publisher_.publish(twist_stamped_msg)
-        self.get_logger().info(f"Got {msg=}")
+        # self.get_logger().info(f"Got {msg=}")
 
 
 def main(args=None):

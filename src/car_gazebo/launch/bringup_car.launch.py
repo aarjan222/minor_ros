@@ -208,16 +208,24 @@ def generate_launch_description():
                 'scan_mode': 'Boost'
         }]
     )
+    
+    twist_mux_params = os.path.join(get_package_share_directory('car_gazebo'), 'config', 'twist_mux.yaml')
+    twist_mux= Node(
+        package="twist_mux",
+        executable="twist_mux",
+        parameters=[twist_mux_params],
+        remappings=[('/cmd_vel_out:', '/bicycle_steering_controller/reference')]
+    )
  
     nodes = [
         control_node,
         control_node_remapped,
         robot_state_pub_bicycle_node,
         joint_state_broadcaster_spawner,
-        # delay_rviz_after_joint_state_broadcaster_spawner,
         delay_robot_controller_spawner_after_joint_state_broadcaster_spawner,
         rplidar,
         teleop,
+        twist_mux,
         # imu_node,
         odom_base_link,
         map_base_link,
