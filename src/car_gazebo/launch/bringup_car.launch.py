@@ -218,7 +218,7 @@ def generate_launch_description():
         delay_robot_controller_spawner_after_joint_state_broadcaster_spawner,
         rplidar,
         teleop,
-        imu_node,
+        # imu_node,
         odom_base_link,
         map_base_link,
         # ekf_node,
