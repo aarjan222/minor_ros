@@ -4,4 +4,4 @@
 
 [submodule "BNO085-ROS2-Node"]
 	path = src/BNO085-ROS2-Node
-	url = 
+	url = https://github.com/ManishGru/BNO085-ROS2-Node

@@ -351,7 +351,7 @@ namespace car_gazebo
     // update rear_wheel_joint velocity
     hw_interfaces_["traction"].state.velocity = car.traction_wheel_velocity; //-----------------both wheel velocity values
     // update front_wheel_joint position
-    hw_interfaces_["steering"].state.position = 0.1 * car.steering_position; //-----------------------front servo steering values
+    hw_interfaces_["steering"].state.position = 0.01 * car.steering_position; //-----------------------front servo steering values
 
     RCLCPP_INFO(
         rclcpp::get_logger("CarlikeBotSystemHardware"), "Got steering position state: %f for joint '%s', time='%f'.",
