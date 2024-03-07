@@ -1,7 +1,7 @@
 #ifndef ACKERMANN_KINEMATICS_H_
 #define ACKERMANN_KINEMATICS_H_
 
-#define WB 1.0
+#define WB 0.46
 
 #include "math.h"
 
@@ -27,7 +27,7 @@ public:
     {
         // slip_angle = atan(rear_wheel_to_center * tan(steer_angle) / wheel_base);
         slip_angle = 0.0;
-        float delta_time = 0.1;
+        float delta_time = 0.03;
         pose[0] += delta_time * velocity * cos(pose[2] + slip_angle);
         pose[1] += delta_time * velocity * sin(pose[2] + slip_angle);
         pose[2] += delta_time * velocity * cos(slip_angle) * tan(steer_angle) / wheel_base * 180 / 3.14;

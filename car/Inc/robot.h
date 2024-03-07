@@ -13,16 +13,12 @@
 #include "robotlib/actuators/servo.hpp"
 #include "ackermann_kinematics.hpp"
 
-#define wheel_base 0.54
+#define wheel_base 0.46
 #define rear_wheel_to_center 0.27
-uint32_t loop_time = 100.0;
 float wheel_radius = 0.115;
 
 struct Odometry
 {
-  float x;
-  float y;
-  float theta;
   float rear_encoder_val;
   float rear_wheel_velocity;
   float front_servo_steering;
