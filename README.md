@@ -14,69 +14,57 @@ colcon build
 source install/setup.bash
 ```
 
+# Run this in dev machine
 ## Launch File for viewing car only
 ```shell
 ros2 launch car_gazebo view_car.launch.py
 ```
 set base_footprint as fixed_frame in rviz2
 
-## Launch File for running the hardware real carlikerobot
+## Launch File for running the hardware real carlikerobot which runs rplidar node, imu node, twist mux node, teleop node(for car teleop) and map->odom transform, odom->base_link transform nodes.
 ```shell
 ros2 launch car_gazebo bringup_car.launch.py remap_odometry_tf:=true
 ```
-set odom as fixed_frame in rviz2
+set odom as fixed_frame in rviz2 to view car
+set map as fixed frame when running slam and localizer
 
-## In another terminal run for sending feedback of stm to ros2_control using socket
+## Running slam toolbox launch file
 ```shell
-ros2 run car_gazebo pose_receiver.py
+ros2 launch car_gazebo online_async_launch.py 
 ```
 
-## Check if the hardware interface loaded properly, by opening another terminal and executing
-
+# In local machine
+## Run rviz2 in local device to see the robot and map
 ```shell
-ros2 control list_hardware_interfaces
+rviz2
 ```
 
-## You should get
+## For running the joystick
 ```shell
-command interfaces
-   bicycle_steering_controller/angular/position [unavailable] [unclaimed]
-   bicycle_steering_controller/linear/velocity [unavailable] [unclaimed]
-   virtual_front_wheel_joint/position [available] [claimed]
-   virtual_rear_wheel_joint/velocity [available] [claimed]
-state interfaces
-   virtual_front_wheel_joint/position
-   virtual_rear_wheel_joint/position
-   virtual_rear_wheel_joint/velocity
+ros2 launch car_gazebo joystick.launch.py 
 ```
 
-## Check if controllers are running
+# On Dev machine
+
+## Runnning twist mux
 ```shell
-ros2 control list_controllers
+ros2 run twist_mux twist_mux --ros-args --params-file src/car_gazebo/config/twist_mux.yaml -r cmd_vel_out:=/cmd_vel_stamped
 ```
 
-You should get
+##  For giving 2D goal pose.
 ```shell
-joint_state_broadcaster[joint_state_broadcaster/JointStateBroadcaster] active
-bicycle_steering_controller[bicycle_steering_controller/BicycleSteeringController] active
+ros2 launch nav2_bringup navigation_launch.py params_file:=src/car_gazebo/config/nav2_test_params.yaml 
 ```
 
-## If everything is fine, now you can send a command to bicycle_steering_controller using ROS 2 CLI:
+# On local machine
+
+## runnin dwb local planner
 
 ```shell
-ros2 topic pub --rate 30 /bicycle_steering_controller/reference geometry_msgs/msg/TwistStamped "
-  twist:
-    linear:
-      x: 1.0
-      y: 0.0
-      z: 0.0
-    angular:
-      x: 0.0
-      y: 0.0
-      z: 0.1"
+ros2 launch nav2_bringup navigation_launch.py params_file:=src/navigation2/config/nav2_params.yaml 
 ```
 
-## You can also run your car using teleop_twist_keyboard also
+## running mppi controller
 ```shell
-ros2 run teleop_twist_keyboard teleop_twist_keyboard
+ ros2 launch nav2_bringup navigation_launch.py params_file:=src/navigation2/config/nav2_params_test.yaml
 ```

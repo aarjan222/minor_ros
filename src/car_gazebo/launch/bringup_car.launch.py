@@ -195,6 +195,12 @@ def generate_launch_description():
         emulate_tty=True,
         parameters=[os.path.join(share_dir, 'params', 'mpu6050.yaml')],
     )  
+    bno_imu_node = Node(
+        package='bno085',
+        executable='bno085_publisher',
+        name='bno085_driver_node',
+        output="screen",
+    )  
     
     rplidar = Node(
         package='rplidar_ros',
@@ -214,7 +220,7 @@ def generate_launch_description():
         package="twist_mux",
         executable="twist_mux",
         parameters=[twist_mux_params],
-        remappings=[('/cmd_vel_out:', '/bicycle_steering_controller/reference')]
+        remappings=[('cmd_vel_out:', '/cmd_vel_stamped')]
     )
  
     nodes = [
@@ -224,12 +230,12 @@ def generate_launch_description():
         joint_state_broadcaster_spawner,
         delay_robot_controller_spawner_after_joint_state_broadcaster_spawner,
         rplidar,
+        # twist_mux,
         teleop,
-        twist_mux,
-        # imu_node,
+        bno_imu_node,
         odom_base_link,
         map_base_link,
-        # ekf_node,
+        ekf_node,
         # gamepad,
     ]
 

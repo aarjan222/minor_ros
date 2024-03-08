@@ -13,7 +13,7 @@ class TeleopToCarlikeBot(Node):
         self.get_logger().info("Init")
         self.subscription = self.create_subscription(
             Twist,
-            '/cmd_vel_joy',
+            '/cmd_vel_stamped',
             self.cmd_vel_callback,
             10)
 

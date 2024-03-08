@@ -78,7 +78,7 @@ install(TARGETS car_gazebo
 )
 
 install(
-  DIRECTORY launch rviz config worlds transforms src urdf cv
+  DIRECTORY launch config transforms src urdf cv
   DESTINATION share/${PROJECT_NAME}
 )
 
