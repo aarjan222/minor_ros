@@ -13,8 +13,8 @@
 float rad_to_deg(float x)
 {
 
-  x = std::min<float>(x, 0.3488);
-  x = std::max<float>(x, -0.3488);
+  x = std::min<float>(x, 0.5235);
+  x = std::max<float>(x, -0.5235);
   return (x * 180 / pi) + 90 - offset;
 }
 
